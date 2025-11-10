@@ -1,0 +1,66 @@
+<h1>Lecturas</h1>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; max-width:1100px">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Medidor*</mat-label>
+    <mat-select formControlName="id_medidor">
+      <mat-option *ngFor="let m of medidores" [value]="m.id_medidor">
+        {{ m.codigo_medidor }} — {{ m.direccion_suministro }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.controls['id_medidor'].hasError('required')">
+      Campo obligatorio
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Año*</mat-label>
+    <input matInput type="number" formControlName="anio" />
+    <mat-error *ngIf="form.controls['anio'].hasError('required')">
+      Campo obligatorio
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Mes (1-12)*</mat-label>
+    <input matInput type="number" formControlName="mes" />
+    <mat-error *ngIf="form.controls['mes'].hasError('required')">
+      Campo obligatorio
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Lectura (kWh)*</mat-label>
+    <input matInput type="number" formControlName="lectura_kwh" />
+    <mat-error *ngIf="form.controls['lectura_kwh'].hasError('required')">
+      Campo obligatorio
+    </mat-error>
+  </mat-form-field>
+
+</div>
+
+<div style="margin:16px 0;">
+  <button mat-flat-button color="primary" (click)="registrar()">Registrar lectura</button>
+</div>
+
+<h2>Historial</h2>
+
+<p *ngIf="!historial?.length">Sin lecturas para el medidor seleccionado.</p>
+
+<table *ngIf="historial?.length" class="mat-elevation-z2" style="width:100%;">
+  <thead>
+  <tr>
+    <th>Año</th>
+    <th>Mes</th>
+    <th>kWh</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let l of historial">
+    <td>{{ l.anio }}</td>
+    <td>{{ l.mes }}</td>
+    <td>{{ l.lectura_kwh }}</td>
+  </tr>
+  </tbody>
+</table>

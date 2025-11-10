@@ -1,0 +1,41 @@
+<div class="container" style="max-width: 720px; margin: 0 auto;">
+  <h1>{{ titulo }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" style="display:grid; gap:12px;">
+    <mat-form-field appearance="outline">
+      <mat-label>RUT (ej: 12.345.678-9)</mat-label>
+      <input matInput formControlName="rut" (blur)="normalizarRut()">
+      <mat-error *ngIf="form.controls.rut.hasError('rutInvalido')">RUT inválido</mat-error>
+      <mat-error *ngIf="form.controls.rut.hasError('required')">Obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre_razon">
+      <mat-error *ngIf="form.controls.nombre_razon.hasError('required')">Obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email_contacto" type="email">
+      <mat-error *ngIf="form.controls.email_contacto.hasError('email')">Email inválido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Dirección de facturación</mat-label>
+      <input matInput formControlName="direccion_facturacion">
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="estado">Activo</mat-slide-toggle>
+
+    <div style="display:flex; gap:8px; margin-top: 12px;">
+      <button mat-flat-button color="primary" type="submit">Guardar</button>
+      <a mat-stroked-button routerLink="/clientes">Volver</a>
+    </div>
+  </form>
+</div>

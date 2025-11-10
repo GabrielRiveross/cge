@@ -1,0 +1,15 @@
+# macOS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+backend/.venv/
+backend/.env
+
+# Node/Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
