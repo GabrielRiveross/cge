@@ -1,8 +1,10 @@
-from datetime import datetime, date
-from pydantic import BaseModel, EmailStr, Field
+from datetime import datetime
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 
-# --- Cliente ---
+# =========================
+# CLIENTE
+# =========================
 class ClienteBase(BaseModel):
     rut: str = Field(..., examples=["12.345.678-9"])
     nombre_razon: str
@@ -11,45 +13,63 @@ class ClienteBase(BaseModel):
     direccion_facturacion: Optional[str] = None
     estado: bool = True
 
-class ClienteCreate(ClienteBase): pass
-class ClienteUpdate(ClienteBase): pass
+class ClienteCreate(ClienteBase):
+    pass
+
+class ClienteUpdate(ClienteBase):
+    pass
 
 class ClienteOut(ClienteBase):
     id_cliente: int
-    class Config: from_attributes = True
+    class Config:
+        from_attributes = True
 
-# --- Medidor ---
+
+# =========================
+# MEDIDOR
+# =========================
 class MedidorBase(BaseModel):
     codigo_medidor: str
     id_cliente: int
     direccion_suministro: str
     estado: bool = True
 
-class MedidorCreate(MedidorBase): pass
-class MedidorUpdate(MedidorBase): pass
+class MedidorCreate(MedidorBase):
+    pass
+
+class MedidorUpdate(MedidorBase):
+    pass
 
 class MedidorOut(MedidorBase):
     id_medidor: int
-    class Config: from_attributes = True
+    class Config:
+        from_attributes = True
 
-# --- Lectura ---
-class LecturaBase(BaseModel):
-    medidor_id: int
-    fecha_lectura: date
-    lectura_actual: int
 
-class LecturaCreate(LecturaBase):
-    medidor_id: int
-    fecha: date
-    lectura_actual: float
+# =========================
+# LECTURA (ALINEADO CON EL FRONT)
+# =========================
+class LecturaCreate(BaseModel):
+    id_medidor: int
+    anio: int = Field(..., ge=2000, le=2100)
+    mes: int = Field(..., ge=1, le=12)
+    lectura_kwh: float = Field(..., ge=0)
 
-class LecturaOut(LecturaBase):
-    id: int
-    created_at: datetime
+class LecturaOut(BaseModel):
+    id_lectura: int
+    id_medidor: int
+    anio: int
+    mes: int
+    lectura_kwh: float
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
-# --- Boleta ---
+
+
+# =========================
+# BOLETA
+# =========================
 class BoletaCreate(BaseModel):
     id_cliente: int
     anio: int
@@ -66,4 +86,6 @@ class BoletaOut(BaseModel):
     iva: float
     total_pagar: float
     estado: str
-    class Config: from_attributes = True
+
+    class Config:
+        from_attributes = True

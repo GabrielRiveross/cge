@@ -30,4 +30,9 @@ export class LecturasService {
   listarPorMedidor(id_medidor: number) {
     return this.http.get<LecturaOut[]>(`${this.base}/por-medidor/${id_medidor}`);
   }
+
+  // Alias que usa tu componente:
+  historial(id_medidor: number) {
+    return this.listarPorMedidor(id_medidor);
+  }
 }
