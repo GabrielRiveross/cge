@@ -38,6 +38,12 @@
         <input matInput type="number" formControlName="lectura_kwh"/>
         <mat-error *ngIf="form.controls['lectura_kwh'].hasError('required')">Campo obligatorio</mat-error>
       </mat-form-field>
+
+      <!-- Observación -->
+      <mat-form-field appearance="outline" style="grid-column: 1 / -1;">
+        <mat-label>Observación</mat-label>
+        <textarea matInput formControlName="observacion" rows="2" placeholder="Opcional"></textarea>
+      </mat-form-field>
     </div>
 
     <div class="btn-row center">
@@ -59,6 +65,7 @@
         <th class="mdc-data-table__header-cell">Año</th>
         <th class="mdc-data-table__header-cell">Mes</th>
         <th class="mdc-data-table__header-cell">kWh</th>
+        <th class="mdc-data-table__header-cell">Observación</th>
       </tr>
       </thead>
       <tbody>
@@ -66,6 +73,7 @@
         <td class="mdc-data-table__cell">{{ l.anio }}</td>
         <td class="mdc-data-table__cell">{{ l.mes }}</td>
         <td class="mdc-data-table__cell">{{ l.lectura_kwh }}</td>
+        <td class="mdc-data-table__cell">{{ l.observacion || '-' }}</td>
       </tr>
       </tbody>
     </table>

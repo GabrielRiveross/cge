@@ -7,6 +7,7 @@ export interface LecturaCreate {
   anio: number;
   mes: number;
   lectura_kwh: number;
+  observacion?: string | null;   // ⬅️ NUEVO
 }
 
 export interface LecturaOut {
@@ -15,6 +16,7 @@ export interface LecturaOut {
   anio: number;
   mes: number;
   lectura_kwh: number;
+  observacion?: string | null;   // ⬅️ NUEVO
   created_at?: string;
 }
 
@@ -27,12 +29,7 @@ export class LecturasService {
     return this.http.post<LecturaOut>(this.base, data);
   }
 
-  listarPorMedidor(id_medidor: number) {
-    return this.http.get<LecturaOut[]>(`${this.base}/por-medidor/${id_medidor}`);
-  }
-
-  // Alias que usa tu componente:
   historial(id_medidor: number) {
-    return this.listarPorMedidor(id_medidor);
+    return this.http.get<LecturaOut[]>(`${this.base}/por-medidor/${id_medidor}`);
   }
 }

@@ -59,6 +59,7 @@ class LecturaCreate(BaseModel):
     anio: int = Field(..., ge=2000, le=2100)
     mes: int = Field(..., ge=1, le=12)
     lectura_kwh: float = Field(..., ge=0)
+    observacion: Optional[str] = None   # ⬅️ NUEVO
 
 class LecturaOut(BaseModel):
     id_lectura: int
@@ -66,12 +67,11 @@ class LecturaOut(BaseModel):
     anio: int
     mes: int
     lectura_kwh: float
+    observacion: Optional[str] = None   # ⬅️ NUEVO
     created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
-
-
 # =========================
 # BOLETA
 # =========================

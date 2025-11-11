@@ -36,6 +36,7 @@ export class LecturaFormComponent implements OnInit {
     anio: [new Date().getFullYear(), [Validators.required, Validators.min(2000), Validators.max(2100)]],
     mes: [new Date().getMonth() + 1, [Validators.required, Validators.min(1), Validators.max(12)]],
     lectura_kwh: [null as number | null, [Validators.required, Validators.min(0)]],
+    observacion: ['']
   });
 
   ngOnInit(): void {
@@ -67,12 +68,16 @@ export class LecturaFormComponent implements OnInit {
       return;
     }
 
+    const obsRaw = (this.form.get('observacion')?.value ?? '') as string;
+    const obs = obsRaw.toString().trim();
     const payload: LecturaCreate = {
       id_medidor: Number(this.form.value.id_medidor),
       anio: Number(this.form.value.anio),
       mes: Number(this.form.value.mes),
-      lectura_kwh: Number(this.form.value.lectura_kwh)
-    };
+      lectura_kwh: Number(this.form.value.lectura_kwh),
+      // ⬇️ opcional: null si viene vacío
+      observacion: obs.length ? obs : null
+    } as LecturaCreate;
 
     this.cargando = true;
     this.lecturasSvc.crear(payload).subscribe({
@@ -82,7 +87,7 @@ export class LecturaFormComponent implements OnInit {
 
         const id = Number(this.form.value.id_medidor);
         if (id) this.cargarHistorial(id);
-        this.form.patchValue({ lectura_kwh: null });
+        this.form.patchValue({ lectura_kwh: null, observacion: '' });
       },
       error: e => {
         this.cargando = false;
