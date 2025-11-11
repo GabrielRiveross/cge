@@ -1,10 +1,10 @@
-/* ===================== CGE · Dim Soft Theme ===================== */
-/* Paleta oscura suave, accesible y moderna */
+/* ===================== CGE · Dim Soft · Opción 3 ===================== */
+/* Paleta oscura suave, coherente y accesible */
 :root{
   --bg:#0f1116;      /* fondo general */
   --bg-2:#151823;    /* barras y contrastes */
   --panel:#181b26;   /* tarjetas/inputs */
-  --panel-2:#1c2030; /* header tabla / bloques */
+  --panel-2:#1c2030; /* headers/bloques */
   --text:#e8edf7;
   --muted:#a7b2c5;
   --bd:#2a3040;
@@ -39,7 +39,6 @@ body{
 
 /* -------- Layout -------- */
 .container{max-width:var(--container); margin-inline:auto; padding:clamp(16px,2.2vw,24px)}
-.container-narrow{max-width:900px}
 .page-title{margin:22px 0 14px; font-size:clamp(28px,4vw,44px); font-weight:900; letter-spacing:.3px}
 
 .card{
@@ -51,32 +50,50 @@ body{
 }
 .section{display:grid; gap:12px}
 
-/* -------- Toolbar (buscador + acciones) -------- */
-.toolbar{
-  display:flex; gap:12px; flex-wrap:wrap;
-  align-items:center; justify-content:space-between;
-  margin: 8px 0 14px;
-}
+/* -------- Encabezado de sección -------- */
+.page-head{display:flex; align-items:end; justify-content:space-between; gap:16px; margin:18px 0 6px}
+.section-title{ margin:0; font-size:clamp(16px,2.2vw,18px); font-weight:800 }
+.section-subtitle{ margin:2px 0 0; color:var(--muted); font-size:.9rem }
+.toolbar{ display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin: 6px 0 8px }
 .toolbar .mat-mdc-form-field{ min-width:280px; flex:1 1 380px }
+.title-icon{ color:var(--primary); opacity:.85 }
+.btn-row{display:flex; gap:10px; flex-wrap:wrap}
+.center{justify-content:center}
+.empty{color:var(--muted); margin:10px 2px 0}
 
-/* -------- Buttons (Material overrides) -------- */
-.mdc-button{border-radius:999px; text-transform:none; font-weight:800}
+/* -------- Botones Material -------- */
+.mdc-button{border-radius:999px; text-transform:none; font-weight:800; position:relative}
+.mdc-button .mat-icon{ font-size:18px; height:18px; width:18px; margin-right:6px }
+
+/* densidad/altura uniforme */
+.mdc-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button{
+  --mdc-text-button-container-height:36px;
+  --mdc-filled-button-container-height:36px;
+  --mdc-outlined-button-container-height:36px;
+}
+
 .mdc-button--unelevated{
   --mdc-filled-button-container-color: var(--primary);
   --mdc-filled-button-label-text-color:#fff;
 }
+
 .mat-mdc-outlined-button{
   --mdc-outlined-button-outline-color: color-mix(in oklab, var(--primary) 70%, var(--bd));
   --mdc-outlined-button-label-text-color: var(--primary);
   background: transparent;
 }
+
+/* Outlined “peligro” (Eliminar) */
 .mat-mdc-outlined-button.mat-warn{
   --mdc-outlined-button-outline-color: color-mix(in oklab, var(--danger) 70%, var(--bd));
   --mdc-outlined-button-label-text-color: var(--danger);
   background: color-mix(in oklab, var(--danger) 10%, transparent);
 }
+.mat-mdc-outlined-button.mat-warn:hover{
+  background: color-mix(in oklab, var(--danger) 15%, transparent);
+}
 
-/* -------- Inputs (Material outline) -------- */
+/* -------- Inputs Material (outline) -------- */
 .mdc-text-field--outlined{
   --mdc-outlined-text-field-container-shape:12px;
   --mdc-outlined-text-field-outline-color: var(--bd);
@@ -107,11 +124,14 @@ body{
   border-color: color-mix(in oklab, var(--warn) 35%, var(--bd));
 }
 
-/* -------- Tabla (mat-table) -------- */
+/* -------- Tabla (Angular Material) -------- */
+.table-wrap{ overflow:auto; border-radius:16px }
+.table--elev{ box-shadow: var(--shadow) }
+
 .mat-mdc-table{
   display:block; overflow:auto; scrollbar-width:thin;
   background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 92%, transparent), var(--panel));
-  border:1px solid var(--bd); border-radius:16px; box-shadow:var(--shadow);
+  border:1px solid var(--bd); border-radius:16px;
 }
 .mat-mdc-table::-webkit-scrollbar{height:8px}
 .mat-mdc-table::-webkit-scrollbar-thumb{
@@ -119,60 +139,29 @@ body{
   border-radius:999px;
 }
 
-.mdc-data-table__header-row{ height:52px }
-.mdc-data-table__header-cell{
-  padding: 12px 18px !important;
-  color: var(--muted); font-weight:900; letter-spacing:.35px;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--panel-2) 80%, var(--panel)), var(--panel));
-  border-bottom: 1px solid color-mix(in oklab, var(--bd) 80%, transparent);
-}
-.mdc-data-table__row{ height:58px; transition: background .18s ease }
-.mdc-data-table__cell{
-  padding: 12px 18px !important; color: var(--text);
-  border-bottom: 1px solid color-mix(in oklab, var(--bd) 55%, transparent);
-}
-.mat-mdc-table .mat-mdc-row:nth-child(2n){
-  background: color-mix(in oklab, var(--panel) 94%, var(--bg-2));
-}
-.mat-mdc-table .mat-mdc-row:hover{
-  background: color-mix(in oklab, var(--primary) 10%, var(--panel));
-}
-
-/* columns padding visual */
-.mdc-data-table__header-cell:first-child,
-.mdc-data-table__cell:first-child{ padding-left:22px !important }
-.mdc-data-table__header-cell:last-child,
-.mdc-data-table__cell:last-child{ padding-right:22px !important; text-align:right }
-
-/* -------- Helpers -------- */
-.btn-row{display:flex; gap:10px; flex-wrap:wrap}
-.center{justify-content:center}
-.empty{color:var(--muted); margin:8px 2px 0}
-
-/* ===== Tablas legibles, centradas y sin artefactos ===== */
-
-/* Celdas: texto completo en desktop */
-.mdc-data-table__header-cell,
-.mdc-data-table__cell{
-  padding: 14px 16px !important;
-  text-align: center !important;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  vertical-align: middle;
-  line-height: 1.35;
-}
-
-/* Filas/headers como grid (sin gaps que crean “ranuras”) */
+/* Head + rows como grid para columnas centradas y sin “ranuras” */
 .mat-mdc-table .mdc-data-table__header-row,
 .mat-mdc-table .mdc-data-table__row{
-  display: grid;
-  align-items: center;
-  column-gap: 0;  /* <- evita las líneas verticales */
+  display:grid; align-items:center; column-gap:0;
   grid-template-columns: var(--cols-tpl, 1fr 2fr 2fr 1fr auto);
 }
 
-/* Separadores sutiles entre columnas sin abrir huecos */
+.mdc-data-table__header-row{ height:52px }
+.mdc-data-table__header-cell{
+  padding: 14px 18px !important;
+  color: var(--muted); font-weight:900; letter-spacing:.35px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--panel-2) 80%, var(--panel)), var(--panel));
+  border-bottom: 1px solid color-mix(in oklab, var(--bd) 80%, transparent);
+  display:flex; justify-content:center; align-items:center;
+}
+.mdc-data-table__row{ height:58px; transition: background .18s ease }
+.mdc-data-table__cell{
+  padding: 14px 18px !important; color: var(--text);
+  border-bottom: 1px solid color-mix(in oklab, var(--bd) 55%, transparent);
+  text-align: center !important; line-height: 1.35; vertical-align: middle;
+}
+
+/* Separadores sutiles entre columnas */
 .mdc-data-table__header-cell + .mdc-data-table__header-cell,
 .mdc-data-table__cell + .mdc-data-table__cell{
   border-left: 1px solid color-mix(in oklab, var(--bd) 65%, transparent);
@@ -180,34 +169,34 @@ body{
 
 /* Plantillas por tabla */
 .table--medidores { --cols-tpl: 1fr 2fr 2fr 1fr auto; }     /* Código | Cliente | Dirección | Estado | Acciones */
-.table--clientes  { --cols-tpl: 1.4fr 1.8fr 2fr 1fr auto; } /* RUT | Nombre | Email | Estado | Acciones */
+.table--clientes  { --cols-tpl: 1.4fr 1.8fr 2fr 1fr auto; }  /* RUT | Nombre | Email | Estado | Acciones */
 
-/* Anchos mínimos para textos largos */
+/* Anchos mínimos para legibilidad */
 .mat-column-cliente,
-.mat-column-email,
 .mat-column-direccion { min-width: 180px; }
 .mat-column-codigo { min-width: 110px; }
 .mat-column-estado { min-width: 120px; }
 
-/* Acciones: siempre alineadas, sin saltos */
+/* -------- Acciones: FIX de recortes/solapes -------- */
 .mat-column-acciones{
-  width: 160px;                 /* ancho fijo para que no “bailen” */
+  min-width: 210px;            /* más espacio para 2 botones */
   justify-self: end;
   text-align: right !important;
-  white-space: nowrap;          /* evita que los botones hagan wrap */
+  white-space: nowrap;         /* evita que los botones salten de línea */
+  overflow: visible;           /* importante: no recortar sombras/ripples */
 }
 .mat-column-acciones .btn-row{
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
+  display:inline-flex; gap:10px; align-items:center;
 }
+.mat-column-acciones .mdc-button{ flex:0 0 auto } /* no comprimir botones */
 
 /* Encabezados centrados visualmente */
-.mdc-data-table__header-cell{
-  display:flex; justify-content:center; align-items:center; font-weight:900;
-}
+.mdc-data-table__header-cell:first-child,
+.mdc-data-table__cell:first-child{ padding-left:22px !important }
+.mdc-data-table__header-cell:last-child,
+.mdc-data-table__cell:last-child{ padding-right:22px !important; text-align:right !important }
 
-/* Hover y zebra siguen igual; sin interferir con columnas */
+/* Hover + zebra */
 .mat-mdc-table .mat-mdc-row:nth-child(2n){
   background: color-mix(in oklab, var(--panel) 94%, var(--bg-2));
 }
@@ -215,7 +204,7 @@ body{
   background: color-mix(in oklab, var(--primary) 10%, var(--panel));
 }
 
-/* Mobile: ahora sí truncado elegante */
+/* Mobile: truncado elegante */
 @media (max-width: 740px){
   .mdc-data-table__header-cell,
   .mdc-data-table__cell{
@@ -223,8 +212,46 @@ body{
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .mat-column-acciones{ width: 140px; }
+  .mat-column-acciones{ min-width: 180px; }
 }
 
-/* Chip de estado centrado dentro de su celda */
-.mat-column-estado .chip{ margin-inline:auto; }
+/* Tipografía utilitaria */
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace }
+
+/* Sticky header opcional dentro de la tabla */
+.table-head .mdc-data-table__header-cell{ position: sticky; top: 0; z-index: 2 }
+
+.medidor-input {
+  width: 240px !important;
+  flex: 0 0 240px;
+}
+
+/* Tabla más estética */
+.table--lecturas {
+  --cols-tpl: 1.4fr 1fr 2fr; /* Fecha | Lectura | Observación */
+}
+
+/* Observación toma más espacio */
+.mat-column-observacion {
+  min-width: 200px;
+}
+
+/* Ajuste visual de la tabla */
+.table--lecturas .mdc-data-table__row {
+  height: 56px;
+}
+
+/* Mensaje vacío centrado y suave */
+.empty {
+  margin-top: 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Íconos en botones */
+.mdc-button mat-icon {
+  font-size: 18px;
+  margin-right: 6px;
+  opacity: .85;
+}

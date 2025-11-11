@@ -1,53 +1,78 @@
 <div class="container">
-  <h1 class="page-title">Medidores</h1>
+  <header class="page-head">
+    <h1 class="page-title">Medidores</h1>
+  </header>
 
-  <div class="card section">
+  <section class="card section">
     <div class="toolbar">
-      <span class="mat-body-1" style="color:var(--muted)">Listado general de medidores</span>
+      <div class="toolbar-title">
+        <div>
+          <h2 class="section-title">Listado general de medidores</h2>
+        </div>
+      </div>
+
+      <!-- Si luego agregas búsqueda/filtros, van aquí -->
       <div class="btn-row">
         <button mat-flat-button color="primary" [routerLink]="['/medidores/crear']">
-          <mat-icon>add</mat-icon> Nuevo medidor
+          <mat-icon>add</mat-icon>
+          Nuevo medidor
         </button>
       </div>
     </div>
 
-    <table mat-table [dataSource]="data" class="mat-mdc-table table--medidores">      <!-- Código -->
-      <ng-container matColumnDef="codigo">
-        <th mat-header-cell *matHeaderCellDef class="mat-column-codigo">Código</th>
-        <td mat-cell *matCellDef="let m" class="mat-column-codigo">{{ m.codigo_medidor }}</td>
-      </ng-container>
+    <div class="table-wrap table--elev">
+      <table mat-table [dataSource]="data" class="mat-mdc-table table--medidores">
 
-      <!-- Cliente -->
-      <ng-container matColumnDef="cliente">
-        <th mat-header-cell *matHeaderCellDef class="mat-column-cliente">Cliente</th>
-        <td mat-cell *matCellDef="let m" class="mat-column-cliente">{{ m.cliente_nombre }}</td>
-      </ng-container>
+        <!-- Código -->
+        <ng-container matColumnDef="codigo">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-codigo">Código</th>
+          <td mat-cell *matCellDef="let m" class="mat-column-codigo">
+            <span class="mono">{{ m.codigo_medidor }}</span>
+          </td>
+        </ng-container>
 
-      <!-- Dirección -->
-      <ng-container matColumnDef="direccion">
-        <th mat-header-cell *matHeaderCellDef class="mat-column-direccion">Dirección Suministro</th>
-        <td mat-cell *matCellDef="let m" class="mat-column-direccion">{{ m.direccion_suministro }}</td>
-      </ng-container>
+        <!-- Cliente -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-cliente">Cliente</th>
+          <td mat-cell *matCellDef="let m" class="mat-column-cliente">{{ m.cliente_razon }}</td>
+        </ng-container>
 
-      <!-- Estado -->
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef class="mat-column-estado">Estado</th>
-        <td mat-cell *matCellDef="let m" class="mat-column-estado">
-          <span class="chip chip--ok" *ngIf="m.estado">Activo</span>
-          <span class="chip chip--warn" *ngIf="!m.estado">Inactivo</span>
-        </td>
-      </ng-container>
+        <!-- Dirección -->
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-direccion">Dirección Suministro</th>
+          <td mat-cell *matCellDef="let m" class="mat-column-direccion">{{ m.direccion_suministro }}</td>
+        </ng-container>
 
-      <!-- Acciones -->
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef class="mat-column-acciones">Acciones</th>
-        <td mat-cell *matCellDef="let m" class="mat-column-acciones">
-          <div class="btn-row center">
-            <button mat-stroked-button (click)="editar(m)">Editar</button>
-          </div>
-        </td>
-      </ng-container>
+        <!-- Estado -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-estado">Estado</th>
+          <td mat-cell *matCellDef="let m" class="mat-column-estado">
+            <span class="chip chip--ok" *ngIf="m.estado">Activo</span>
+            <span class="chip chip--warn" *ngIf="!m.estado">Inactivo</span>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        <!-- Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-acciones">Acciones</th>
+          <td mat-cell *matCellDef="let m" class="mat-column-acciones">
+            <div class="btn-row center">
+              <button mat-stroked-button color="primary" (click)="editar(m)">
+                <mat-icon>edit</mat-icon> Editar
+              </button>
+              <button mat-stroked-button color="warn" (click)="eliminar(m)">
+                <mat-icon>delete</mat-icon> Eliminar
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-head"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+      </table>
+    </div>
+
+    <p class="empty" *ngIf="!data?.length">No hay medidores aún.</p>
+  </section>
+</div>

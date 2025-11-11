@@ -31,6 +31,10 @@ class Medidor(Base):
     cliente: Mapped["Cliente"] = relationship(back_populates="medidores")
     lecturas: Mapped[list["LecturaConsumo"]] = relationship(back_populates="medidor", cascade="all, delete-orphan")
 
+    @property
+    def cliente_nombre(self) -> str | None:
+        return self.cliente.nombre_razon if self.cliente else None
+
 class LecturaConsumo(Base):
     __tablename__ = "lectura_consumo"
     id_lectura: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

@@ -42,8 +42,13 @@ class MedidorUpdate(MedidorBase):
 
 class MedidorOut(MedidorBase):
     id_medidor: int
+    cliente_nombre: Optional[str] = None
     class Config:
         from_attributes = True
+
+class MedidorRowOut(MedidorOut):
+    # Extiende lo que ya devuelves para incluir el nombre del cliente
+    cliente_nombre: str
 
 
 # =========================

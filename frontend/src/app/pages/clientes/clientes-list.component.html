@@ -52,8 +52,7 @@
         <td mat-cell *matCellDef="let c" class="mat-column-acciones">
       <span class="btn-row">
         <button mat-stroked-button (click)="editar(c)">Editar</button>
-        <!-- Si usas eliminar, queda al lado sin romper fila -->
-        <!-- <button mat-stroked-button color="warn" (click)="eliminar(c)">Eliminar</button> -->
+        <button mat-stroked-button color="warn" (click)="eliminar(c)">Eliminar</button>
       </span>
         </td>
       </ng-container>

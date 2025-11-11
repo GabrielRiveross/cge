@@ -23,7 +23,22 @@ def create_medidor(payload: schemas.MedidorCreate, db: Session = Depends(get_db)
 
 @router.get("", response_model=list[schemas.MedidorOut])
 def list_medidores(db: Session = Depends(get_db)):
-    return db.query(models.Medidor).all()
+    rows = (
+        db.query(
+            models.Medidor.id_medidor,
+            models.Medidor.codigo_medidor,
+            models.Medidor.id_cliente,
+            models.Medidor.direccion_suministro,
+            models.Medidor.estado,
+            models.Cliente.nombre_razon.label("cliente_nombre"),
+        )
+        .join(models.Cliente, models.Medidor.id_cliente == models.Cliente.id_cliente)
+        .order_by(models.Medidor.id_medidor.asc())
+        .all()
+    )
+
+    # SQLAlchemy Row → dict → Pydantic
+    return [schemas.MedidorOut(**dict(r._mapping)) for r in rows]
 
 
 @router.get("/{id}", response_model=schemas.MedidorOut)
@@ -31,6 +46,10 @@ def get_medidor(id: int, db: Session = Depends(get_db)):
     obj = db.get(models.Medidor, id)
     if not obj:
         raise HTTPException(status_code=404, detail="Medidor no existe")
+    if obj.cliente:
+        setattr(obj, "cliente_nombre", obj.cliente.nombre_razon)
+    else:
+        setattr(obj, "cliente_nombre", None)
     return obj
 
 

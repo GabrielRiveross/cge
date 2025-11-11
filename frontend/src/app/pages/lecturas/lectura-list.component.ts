@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 
 import { LecturasService, LecturaOut} from '../../services/lecturas.service';
 import { MedidoresService } from '../../services/medidores.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-lecturas-list',
@@ -17,7 +18,7 @@ import { MedidoresService } from '../../services/medidores.service';
   imports: [
     CommonModule, FormsModule, RouterLink,
     MatTableModule, MatFormFieldModule, MatInputModule,
-    MatButtonModule, MatSnackBarModule
+    MatButtonModule, MatSnackBarModule, MatIcon
   ],
   templateUrl: './lecturas-list.component.html'
 })
