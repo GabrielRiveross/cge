@@ -1,4 +1,176 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===================== CGE · Dim Soft Theme ===================== */
+/* Paleta oscura suave, accesible y moderna */
+:root{
+  --bg:#0f1116;      /* fondo general */
+  --bg-2:#151823;    /* barras y contrastes */
+  --panel:#181b26;   /* tarjetas/inputs */
+  --panel-2:#1c2030; /* header tabla / bloques */
+  --text:#e8edf7;
+  --muted:#a7b2c5;
+  --bd:#2a3040;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  --primary:#6da0ff;     /* azul suave */
+  --primary-600:#5587ea;
+  --accent:#c4a8ff;      /* violeta suave */
+  --accent-600:#a98cf2;
+
+  --success:#4dd59a;
+  --warn:#f2b56a;
+  --danger:#ff6b6b;
+
+  --radius:16px;
+  --shadow:0 14px 40px rgba(0,0,0,.45);
+
+  --container:1080px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:
+    radial-gradient(1400px 700px at 15% -15%, rgba(109,160,255,.08), transparent 60%),
+    radial-gradient(1200px 600px at 110% -10%, rgba(196,168,255,.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+}
+:focus-visible{outline:3px solid color-mix(in oklab, var(--accent) 70%, transparent); outline-offset:2px}
+
+/* -------- Layout -------- */
+.container{max-width:var(--container); margin-inline:auto; padding:clamp(16px,2.2vw,24px)}
+.container-narrow{max-width:900px}
+.page-title{margin:22px 0 14px; font-size:clamp(28px,4vw,44px); font-weight:900; letter-spacing:.3px}
+
+.card{
+  background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 95%, transparent), var(--panel));
+  border:1px solid var(--bd);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:clamp(14px,2vw,22px);
+}
+.section{display:grid; gap:12px}
+
+/* -------- Toolbar (buscador + acciones) -------- */
+.toolbar{
+  display:flex; gap:12px; flex-wrap:wrap;
+  align-items:center; justify-content:space-between;
+  margin: 8px 0 14px;
+}
+.toolbar .mat-mdc-form-field{ min-width:280px; flex:1 1 380px }
+
+/* -------- Buttons (Material overrides) -------- */
+.mdc-button{border-radius:999px; text-transform:none; font-weight:800}
+.mdc-button--unelevated{
+  --mdc-filled-button-container-color: var(--primary);
+  --mdc-filled-button-label-text-color:#fff;
+}
+.mat-mdc-outlined-button{
+  --mdc-outlined-button-outline-color: color-mix(in oklab, var(--primary) 70%, var(--bd));
+  --mdc-outlined-button-label-text-color: var(--primary);
+  background: transparent;
+}
+.mat-mdc-outlined-button.mat-warn{
+  --mdc-outlined-button-outline-color: color-mix(in oklab, var(--danger) 70%, var(--bd));
+  --mdc-outlined-button-label-text-color: var(--danger);
+  background: color-mix(in oklab, var(--danger) 10%, transparent);
+}
+
+/* -------- Inputs (Material outline) -------- */
+.mdc-text-field--outlined{
+  --mdc-outlined-text-field-container-shape:12px;
+  --mdc-outlined-text-field-outline-color: var(--bd);
+  --mdc-outlined-text-field-hover-outline-color: color-mix(in oklab, var(--primary) 45%, var(--bd));
+  --mdc-outlined-text-field-focus-outline-color: var(--primary);
+  --mdc-outlined-text-field-input-text-color: var(--text);
+  --mdc-outlined-text-field-label-text-color: var(--muted);
+  --mdc-outlined-text-field-focus-label-text-color: var(--primary);
+  background: color-mix(in oklab, var(--panel) 88%, transparent);
+}
+.mat-mdc-form-field-error{ color: var(--danger) }
+.mat-mdc-form-field-hint{ color: var(--muted) }
+
+/* -------- Chips -------- */
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  font-size:.85rem; font-weight:800;
+  background: color-mix(in oklab, var(--panel) 75%, var(--bg));
+  border:1px solid var(--bd); color:var(--text);
+}
+.chip--ok{
+  background: color-mix(in oklab, var(--success) 22%, var(--panel));
+  border-color: color-mix(in oklab, var(--success) 35%, var(--bd));
+}
+.chip--warn{
+  background: color-mix(in oklab, var(--warn) 22%, var(--panel));
+  border-color: color-mix(in oklab, var(--warn) 35%, var(--bd));
+}
+
+/* -------- Tabla (mat-table) -------- */
+.mat-mdc-table{
+  display:block; overflow:auto; scrollbar-width:thin;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 92%, transparent), var(--panel));
+  border:1px solid var(--bd); border-radius:16px; box-shadow:var(--shadow);
+}
+.mat-mdc-table::-webkit-scrollbar{height:8px}
+.mat-mdc-table::-webkit-scrollbar-thumb{
+  background: color-mix(in oklab, var(--primary) 25%, var(--bd));
+  border-radius:999px;
+}
+
+.mdc-data-table__header-row{ height:52px }
+.mdc-data-table__header-cell{
+  padding: 12px 18px !important;
+  color: var(--muted); font-weight:900; letter-spacing:.35px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--panel-2) 80%, var(--panel)), var(--panel));
+  border-bottom: 1px solid color-mix(in oklab, var(--bd) 80%, transparent);
+}
+.mdc-data-table__row{ height:58px; transition: background .18s ease }
+.mdc-data-table__cell{
+  padding: 12px 18px !important; color: var(--text);
+  border-bottom: 1px solid color-mix(in oklab, var(--bd) 55%, transparent);
+}
+.mat-mdc-table .mat-mdc-row:nth-child(2n){
+  background: color-mix(in oklab, var(--panel) 94%, var(--bg-2));
+}
+.mat-mdc-table .mat-mdc-row:hover{
+  background: color-mix(in oklab, var(--primary) 10%, var(--panel));
+}
+
+/* columns padding visual */
+.mdc-data-table__header-cell:first-child,
+.mdc-data-table__cell:first-child{ padding-left:22px !important }
+.mdc-data-table__header-cell:last-child,
+.mdc-data-table__cell:last-child{ padding-right:22px !important; text-align:right }
+
+/* -------- Helpers -------- */
+.btn-row{display:flex; gap:10px; flex-wrap:wrap}
+.center{justify-content:center}
+.empty{color:var(--muted); margin:8px 2px 0}
+
+/* ===== Separación horizontal mayor en tablas ===== */
+
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
+  padding-left: 86px !important;   /* antes: ~18px */
+  padding-right: 86px !important;
+}
+
+/* Si alguna tabla tiene muchas columnas, no se comprimirá */
+.mat-mdc-table {
+  width: 100% !important;
+  table-layout: auto !important; /* Permite que las columnas se expandan */
+}
+
+/* Mantener encabezados centrados */
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
+  text-align: center !important;
+}
+
+/* Acciones un poco más cerca, pero no pegadas */
+.mdc-data-table__header-cell:last-child,
+.mdc-data-table__cell:last-child {
+  padding-right: 40px !important;
+}

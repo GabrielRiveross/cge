@@ -1,12 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule }     from '@angular/material/input';
+import { MatButtonModule }    from '@angular/material/button';
+// (Opcional) Si usas íconos en esta vista:
+// import { MatIconModule }      from '@angular/material/icon';
+
 import { BoletasService } from '../../services/boletas.service';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-boletas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIcon,
+    // MatIconModule
+  ],
   templateUrl: './boletas.component.html'
 })
 export class BoletasComponent implements OnInit {

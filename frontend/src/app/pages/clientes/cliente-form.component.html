@@ -1,7 +1,12 @@
-<div class="container" style="max-width: 720px; margin: 0 auto;">
-  <h1>{{ titulo }}</h1>
+<div class="container container-narrow">
+  <h1 class="page-title">{{ titulo }}</h1>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()" style="display:grid; gap:12px;">
+  <form class="card section" [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="toolbar" style="margin:0">
+      <span class="mat-body-1" style="color:var(--muted)">Completa la información del cliente</span>
+      <a mat-stroked-button routerLink="/clientes">Volver</a>
+    </div>
+
     <mat-form-field appearance="outline">
       <mat-label>RUT (ej: 12.345.678-9)</mat-label>
       <input matInput formControlName="rut" (blur)="normalizarRut()">
@@ -15,16 +20,18 @@
       <mat-error *ngIf="form.controls.nombre_razon.hasError('required')">Obligatorio</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email_contacto" type="email">
-      <mat-error *ngIf="form.controls.email_contacto.hasError('email')">Email inválido</mat-error>
-    </mat-form-field>
+    <div class="toolbar" style="gap:12px">
+      <mat-form-field appearance="outline" style="flex:1 1 50%">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email_contacto" type="email">
+        <mat-error *ngIf="form.controls.email_contacto.hasError('email')">Email inválido</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Teléfono</mat-label>
-      <input matInput formControlName="telefono">
-    </mat-form-field>
+      <mat-form-field appearance="outline" style="flex:1 1 50%">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono">
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline">
       <mat-label>Dirección de facturación</mat-label>
@@ -33,9 +40,9 @@
 
     <mat-slide-toggle formControlName="estado">Activo</mat-slide-toggle>
 
-    <div style="display:flex; gap:8px; margin-top: 12px;">
+    <div class="btn-row center">
       <button mat-flat-button color="primary" type="submit">Guardar</button>
-      <a mat-stroked-button routerLink="/clientes">Volver</a>
+      <button mat-stroked-button type="button" routerLink="/clientes">Cancelar</button>
     </div>
   </form>
 </div>

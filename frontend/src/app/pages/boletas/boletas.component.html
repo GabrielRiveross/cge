@@ -1,46 +1,59 @@
-<div class="max-w-3xl mx-auto p-4 space-y-4">
-  <h1 class="text-2xl font-bold">Boletas</h1>
+<div class="container container-narrow">
+  <h1 class="page-title">Boletas</h1>
 
-  <div class="grid grid-cols-3 gap-2">
-    <label class="col-span-1">ID Cliente
-      <input class="border p-2 w-full" type="number" [(ngModel)]="idCliente" (change)="guardarPref()">
-    </label>
-    <label class="col-span-1">Año
-      <input class="border p-2 w-full" type="number" [(ngModel)]="anio">
-    </label>
-    <label class="col-span-1">Mes
-      <input class="border p-2 w-full" type="number" min="1" max="12" [(ngModel)]="mes">
-    </label>
+  <div class="card section">
+    <div class="toolbar" style="margin:0">
+      <mat-form-field appearance="outline">
+        <mat-label>ID Cliente</mat-label>
+        <input matInput type="number" [(ngModel)]="idCliente" (change)="guardarPref()">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Año</mat-label>
+        <input matInput type="number" [(ngModel)]="anio">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mes</mat-label>
+        <input matInput type="number" min="1" max="12" [(ngModel)]="mes">
+      </mat-form-field>
+
+      <div class="btn-row">
+        <button mat-flat-button color="primary" (click)="generar()" [disabled]="loading">Generar boleta</button>
+        <button mat-flat-button color="accent" (click)="listar()" [disabled]="loading">Refrescar</button>
+      </div>
+    </div>
+
+    <p *ngIf="msg" class="mat-body-small" style="color:var(--danger)">{{ msg }}</p>
+    <div *ngIf="loading">Cargando...</div>
+
+    <table class="mat-mdc-table" *ngIf="boletas.length">
+      <thead>
+      <tr class="mdc-data-table__header-row">
+        <th class="mdc-data-table__header-cell">ID</th>
+        <th class="mdc-data-table__header-cell">Periodo</th>
+        <th class="mdc-data-table__header-cell">kWh</th>
+        <th class="mdc-data-table__header-cell">Total</th>
+        <th class="mdc-data-table__header-cell">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let b of boletas" class="mdc-data-table__row">
+        <td class="mdc-data-table__cell">{{ b.id_boleta }}</td>
+        <td class="mdc-data-table__cell">{{ b.mes | number:'2.0-0' }}/{{ b.anio }}</td>
+        <td class="mdc-data-table__cell">{{ b.kwh_total }}</td>
+        <td class="mdc-data-table__cell">${{ b.total_pagar }}</td>
+        <td class="mdc-data-table__cell">
+          <div class="btn-row center">
+            <button mat-stroked-button color="primary" (click)="descargar(b.id_boleta)">
+              <mat-icon>download</mat-icon> Descargar PDF
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!boletas.length && !loading" class="empty">No hay boletas para mostrar.</p>
   </div>
-
-  <div class="flex gap-2">
-    <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="generar()" [disabled]="loading">Generar boleta</button>
-    <button class="bg-gray-700 text-white px-4 py-2 rounded" (click)="listar()" [disabled]="loading">Refrescar</button>
-  </div>
-
-  <p *ngIf="msg" class="text-sm text-red-600">{{ msg }}</p>
-  <div *ngIf="loading">Cargando...</div>
-
-  <table class="w-full mt-4 border" *ngIf="boletas.length">
-    <tr class="bg-gray-100">
-      <th class="p-2 text-left">ID</th>
-      <th class="p-2 text-left">Periodo</th>
-      <th class="p-2 text-left">kWh</th>
-      <th class="p-2 text-left">Total</th>
-      <th class="p-2 text-left">Acciones</th>
-    </tr>
-    <tr *ngFor="let b of boletas" class="border-t">
-      <td class="p-2">{{ b.id_boleta }}</td>
-      <td class="p-2">{{ b.mes | number:'2.0-0' }}/{{ b.anio }}</td>
-      <td class="p-2">{{ b.kwh_total }}</td>
-      <td class="p-2">${{ b.total_pagar }}</td>
-      <td class="p-2">
-        <button class="bg-green-600 text-white px-3 py-1 rounded" (click)="descargar(b.id_boleta)">
-          Descargar PDF
-        </button>
-      </td>
-    </tr>
-  </table>
-
-  <p *ngIf="!boletas.length && !loading">No hay boletas para mostrar.</p>
 </div>

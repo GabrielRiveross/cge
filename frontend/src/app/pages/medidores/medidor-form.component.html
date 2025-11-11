@@ -1,7 +1,12 @@
-<div class="container" style="max-width: 720px; margin: 0 auto;">
-  <h1>{{ titulo }}</h1>
+<div class="container container-narrow">
+  <h1 class="page-title">{{ titulo }}</h1>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()" style="display:grid; gap:12px;">
+  <form class="card section" [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="toolbar" style="margin:0">
+      <span class="mat-body-1" style="color:var(--muted)">Define el medidor y su cliente</span>
+      <a mat-stroked-button routerLink="/medidores">Volver</a>
+    </div>
+
     <mat-form-field appearance="outline">
       <mat-label>Código de medidor</mat-label>
       <input matInput formControlName="codigo_medidor" minlength="1">
@@ -9,27 +14,29 @@
       <mat-error *ngIf="form.controls.codigo_medidor.hasError('required')">Obligatorio</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Cliente</mat-label>
-      <mat-select formControlName="id_cliente">
-        <mat-option *ngFor="let c of clientes" [value]="c.id_cliente">
-          {{ c.nombre_razon }} ({{ c.rut }})
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.controls.id_cliente.hasError('required')">Obligatorio</mat-error>
-    </mat-form-field>
+    <div class="toolbar" style="gap:12px">
+      <mat-form-field appearance="outline" style="flex:1 1 50%">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="id_cliente">
+          <mat-option *ngFor="let c of clientes" [value]="c.id_cliente">
+            {{ c.nombre_razon }} ({{ c.rut }})
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls.id_cliente.hasError('required')">Obligatorio</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Dirección de suministro</mat-label>
-      <input matInput formControlName="direccion_suministro">
-      <mat-error *ngIf="form.controls.direccion_suministro.hasError('required')">Obligatorio</mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="outline" style="flex:1 1 50%">
+        <mat-label>Dirección de suministro</mat-label>
+        <input matInput formControlName="direccion_suministro">
+        <mat-error *ngIf="form.controls.direccion_suministro.hasError('required')">Obligatorio</mat-error>
+      </mat-form-field>
+    </div>
 
     <mat-slide-toggle formControlName="estado">Activo</mat-slide-toggle>
 
-    <div style="display:flex; gap:8px; margin-top: 12px;">
+    <div class="btn-row center">
       <button mat-flat-button color="primary" type="submit">Guardar</button>
-      <a mat-stroked-button routerLink="/medidores">Volver</a>
+      <button mat-stroked-button type="button" routerLink="/medidores">Cancelar</button>
     </div>
   </form>
 </div>
