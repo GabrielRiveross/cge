@@ -31,7 +31,6 @@ export class LecturasListComponent {
 
   idMedidor?: number;
   data: LecturaOut[] = [];
-  // Asegúrate de que estas columnas existan en tu HTML de la tabla
   displayedColumns = ['fecha', 'lectura', 'observacion'];
 
   buscar(): void {
@@ -40,15 +39,20 @@ export class LecturasListComponent {
       this.data = [];
       return;
     }
-
     this.svc.listarPorMedidor(id).subscribe({
       next: (rows: LecturaOut[]) => (this.data = rows ?? []),
       error: () => (this.data = []),
     });
   }
 
+  /** Muestra MM/YYYY con mes cero-llenado a 2 dígitos a partir de (anio, mes) del registro */
+  getPeriodo(row: LecturaOut): string {
+    const m = String(row?.mes ?? '').padStart(2, '0');
+    const y = row?.anio ?? '';
+    return m && y ? `${m}/${y}` : '';
+  }
+
   trackByLectura(index: number, row: LecturaOut): string | number {
-    // Si no tienes id_lectura, usa una clave compuesta
     return row?.id_lectura ?? `${row?.id_medidor}-${row?.anio}-${row?.mes}-${index}`;
   }
 }
