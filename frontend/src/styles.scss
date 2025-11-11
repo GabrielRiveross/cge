@@ -149,28 +149,82 @@ body{
 .center{justify-content:center}
 .empty{color:var(--muted); margin:8px 2px 0}
 
-/* ===== Separación horizontal mayor en tablas ===== */
+/* ===== Tablas legibles, centradas y sin artefactos ===== */
 
+/* Celdas: texto completo en desktop */
 .mdc-data-table__header-cell,
-.mdc-data-table__cell {
-  padding-left: 86px !important;   /* antes: ~18px */
-  padding-right: 86px !important;
-}
-
-/* Si alguna tabla tiene muchas columnas, no se comprimirá */
-.mat-mdc-table {
-  width: 100% !important;
-  table-layout: auto !important; /* Permite que las columnas se expandan */
-}
-
-/* Mantener encabezados centrados */
-.mdc-data-table__header-cell,
-.mdc-data-table__cell {
+.mdc-data-table__cell{
+  padding: 14px 16px !important;
   text-align: center !important;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  vertical-align: middle;
+  line-height: 1.35;
 }
 
-/* Acciones un poco más cerca, pero no pegadas */
-.mdc-data-table__header-cell:last-child,
-.mdc-data-table__cell:last-child {
-  padding-right: 40px !important;
+/* Filas/headers como grid (sin gaps que crean “ranuras”) */
+.mat-mdc-table .mdc-data-table__header-row,
+.mat-mdc-table .mdc-data-table__row{
+  display: grid;
+  align-items: center;
+  column-gap: 0;  /* <- evita las líneas verticales */
+  grid-template-columns: var(--cols-tpl, 1fr 2fr 2fr 1fr auto);
 }
+
+/* Separadores sutiles entre columnas sin abrir huecos */
+.mdc-data-table__header-cell + .mdc-data-table__header-cell,
+.mdc-data-table__cell + .mdc-data-table__cell{
+  border-left: 1px solid color-mix(in oklab, var(--bd) 65%, transparent);
+}
+
+/* Plantillas por tabla */
+.table--medidores { --cols-tpl: 1fr 2fr 2fr 1fr auto; }     /* Código | Cliente | Dirección | Estado | Acciones */
+.table--clientes  { --cols-tpl: 1.4fr 1.8fr 2fr 1fr auto; } /* RUT | Nombre | Email | Estado | Acciones */
+
+/* Anchos mínimos para textos largos */
+.mat-column-cliente,
+.mat-column-email,
+.mat-column-direccion { min-width: 180px; }
+.mat-column-codigo { min-width: 110px; }
+.mat-column-estado { min-width: 120px; }
+
+/* Acciones: siempre alineadas, sin saltos */
+.mat-column-acciones{
+  width: 160px;                 /* ancho fijo para que no “bailen” */
+  justify-self: end;
+  text-align: right !important;
+  white-space: nowrap;          /* evita que los botones hagan wrap */
+}
+.mat-column-acciones .btn-row{
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Encabezados centrados visualmente */
+.mdc-data-table__header-cell{
+  display:flex; justify-content:center; align-items:center; font-weight:900;
+}
+
+/* Hover y zebra siguen igual; sin interferir con columnas */
+.mat-mdc-table .mat-mdc-row:nth-child(2n){
+  background: color-mix(in oklab, var(--panel) 94%, var(--bg-2));
+}
+.mat-mdc-table .mat-mdc-row:hover{
+  background: color-mix(in oklab, var(--primary) 10%, var(--panel));
+}
+
+/* Mobile: ahora sí truncado elegante */
+@media (max-width: 740px){
+  .mdc-data-table__header-cell,
+  .mdc-data-table__cell{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mat-column-acciones{ width: 140px; }
+}
+
+/* Chip de estado centrado dentro de su celda */
+.mat-column-estado .chip{ margin-inline:auto; }

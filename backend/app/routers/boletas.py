@@ -17,9 +17,11 @@ def generar_boleta(payload: schemas.BoletaCreate, db: Session = Depends(get_db))
     if not cliente:
         raise HTTPException(status_code=404, detail="Cliente no existe")
 
-    dup = db.query(models.Boleta).filter_by(
-        id_cliente=payload.id_cliente, anio=payload.anio, mes=payload.mes
-    ).first()
+    dup = (
+        db.query(models.Boleta)
+        .filter_by(id_cliente=payload.id_cliente, anio=payload.anio, mes=payload.mes)
+        .first()
+    )
     if dup:
         raise HTTPException(status_code=409, detail="Boleta ya existe para ese mes")
 
