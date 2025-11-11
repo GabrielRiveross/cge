@@ -16,9 +16,9 @@ import { LecturasService, LecturaOut } from '../../services/lecturas.service';
     CommonModule, FormsModule, MatTableModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule
   ],
-  templateUrl: './lectura-list.component.html'
+  templateUrl: './lecturas-list.component.html'
 })
-export class LecturaListComponent {
+export class LecturasListComponent {
   private svc = inject(LecturasService);
 
   idMedidor?: number;
