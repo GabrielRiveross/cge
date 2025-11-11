@@ -9,16 +9,23 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { LecturasService, LecturaCreate, LecturaOut } from '../../services/lecturas.service';
 import { MedidoresService } from '../../services/medidores.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-lectura-form',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule,
-    MatButtonModule, MatSnackBarModule
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatIconModule, // ← importante para <mat-icon>
   ],
-  templateUrl: './lectura-form.component.html'
+  templateUrl: './lectura-form.component.html',
+  styleUrls: ['./lectura-form.component.scss'],
 })
 export class LecturaFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -32,19 +39,21 @@ export class LecturaFormComponent implements OnInit {
   historial: LecturaOut[] = [];
 
   form = this.fb.group({
-    id_medidor: [null as number | null, [Validators.required]],
+    id_medidor: [null, [Validators.required]],
     anio: [new Date().getFullYear(), [Validators.required, Validators.min(2000), Validators.max(2100)]],
     mes: [new Date().getMonth() + 1, [Validators.required, Validators.min(1), Validators.max(12)]],
-    lectura_kwh: [null as number | null, [Validators.required, Validators.min(0)]],
-    observacion: ['']
+    lectura_kwh: [null, [Validators.required, Validators.min(0)]],
+    observacion: [''],
   });
 
   ngOnInit(): void {
+    // Cargar medidores para el <mat-select>
     this.medidoresSvc.listar().subscribe({
-      next: (res: any[]) => this.medidores = res || [],
-      error: () => this.snack.open('No se pudieron cargar los medidores', 'Cerrar', { duration: 2500 })
+      next: (res: any[]) => (this.medidores = res || []),
+      error: () => this.snack.open('No se pudieron cargar los medidores', 'Cerrar', { duration: 2500 }),
     });
 
+    // Al cambiar el medidor, cargar historial usando listarPorMedidor
     this.form.controls.id_medidor.valueChanges.subscribe((id) => {
       if (id != null) this.cargarHistorial(Number(id));
       else this.historial = [];
@@ -52,12 +61,12 @@ export class LecturaFormComponent implements OnInit {
   }
 
   private cargarHistorial(id_medidor: number): void {
-    this.lecturasSvc.historial(id_medidor).subscribe({
-      next: (res: LecturaOut[]) => this.historial = res ?? [],
+    this.lecturasSvc.listarPorMedidor(id_medidor).subscribe({
+      next: (res: LecturaOut[]) => (this.historial = res ?? []),
       error: () => {
         this.historial = [];
         this.snack.open('No se pudo cargar el historial', 'Cerrar', { duration: 2500 });
-      }
+      },
     });
   }
 
@@ -68,36 +77,40 @@ export class LecturaFormComponent implements OnInit {
       return;
     }
 
-    const obsRaw = (this.form.get('observacion')?.value ?? '') as string;
-    const obs = obsRaw.toString().trim();
+    const v = this.form.getRawValue();
+
     const payload: LecturaCreate = {
-      id_medidor: Number(this.form.value.id_medidor),
-      anio: Number(this.form.value.anio),
-      mes: Number(this.form.value.mes),
-      lectura_kwh: Number(this.form.value.lectura_kwh),
-      // ⬇️ opcional: null si viene vacío
-      observacion: obs.length ? obs : null
-    } as LecturaCreate;
+      id_medidor: Number(v.id_medidor),
+      anio: Number(v.anio),
+      mes: Number(v.mes),
+      lectura_kwh: Number(v.lectura_kwh),
+      // construcción segura (evita error por toString en null/undefined)
+      observacion: `${v.observacion ?? ''}`.trim() || null,
+    };
 
     this.cargando = true;
     this.lecturasSvc.crear(payload).subscribe({
-      next: _ => {
+      next: () => {
         this.cargando = false;
         this.snack.open('Lectura registrada', 'OK', { duration: 2000 });
 
         const id = Number(this.form.value.id_medidor);
         if (id) this.cargarHistorial(id);
+
+        // Resetea los campos de entrada de lectura y observación
         this.form.patchValue({ lectura_kwh: null, observacion: '' });
       },
-      error: e => {
+      error: (e) => {
         this.cargando = false;
         const detail = e?.error?.detail;
-        const msg = typeof detail === 'string'
-          ? detail
-          : Array.isArray(detail) ? detail.map((x: any) => x?.msg || JSON.stringify(x)).join(' • ')
-            : 'No se pudo registrar la lectura';
+        const msg =
+          typeof detail === 'string'
+            ? detail
+            : Array.isArray(detail)
+              ? detail.map((x: any) => x?.msg || JSON.stringify(x)).join(' • ')
+              : 'No se pudo registrar la lectura';
         this.snack.open(msg, 'Cerrar', { duration: 3500 });
-      }
+      },
     });
   }
 

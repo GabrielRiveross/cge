@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { MedidoresService } from '../../services/medidores.service';
+import {Medidor, MedidoresService} from '../../services/medidores.service';
 import { ClientesService } from '../../services/clientes.service';
 
 @Component({
@@ -68,13 +68,10 @@ export class MedidoresListComponent implements OnInit {
     return this.clientesIndex.get(idCliente) ?? '';
   }
 
-  editar(m: any): void {
-    if (!m?.id_medidor) {
-      this.snack.open('Medidor inválido', 'Cerrar', { duration: 2000 });
-      return;
-    }
+  editar(m: Medidor) {
     this.router.navigate(['/medidores/editar', m.id_medidor]);
   }
+
 
   eliminar(m: any): void {
     if (!m?.id_medidor) return;

@@ -1,81 +1,45 @@
 <div class="container">
-  <h1 class="page-title">Lecturas</h1>
+  <h1 class="page-title">
+    <mat-icon>add</mat-icon>
+    Nueva lectura
+  </h1>
 
-  <!-- Formulario en card -->
-  <form class="card section" [formGroup]="form" (ngSubmit)="registrar()">
-    <div class="toolbar" style="margin:0">
-      <span class="mat-body-1" style="color:var(--muted)">Registra una nueva lectura</span>
-    </div>
+  <!-- usa registrar() que sí existe en tu TS -->
+  <form class="grid" [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>ID medidor</mat-label>
+      <input matInput type="number" formControlName="id_medidor" />
+    </mat-form-field>
 
-    <!-- Grid responsivo 2 columnas -->
-    <div class="section" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-      <mat-form-field appearance="outline">
-        <mat-label>Medidor*</mat-label>
-        <mat-select formControlName="id_medidor">
-          <mat-option *ngFor="let m of medidores" [value]="m.id_medidor">
-            {{ m.codigo_medidor }} — {{ m.direccion_suministro }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.controls['id_medidor'].hasError('required')">
-          Campo obligatorio
-        </mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Año</mat-label>
+      <input matInput type="number" formControlName="anio" />
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Año*</mat-label>
-        <input matInput type="number" formControlName="anio"/>
-        <mat-error *ngIf="form.controls['anio'].hasError('required')">Campo obligatorio</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mes</mat-label>
+      <input matInput type="number" formControlName="mes" />
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Mes (1-12)*</mat-label>
-        <input matInput type="number" formControlName="mes"/>
-        <mat-error *ngIf="form.controls['mes'].hasError('required')">Campo obligatorio</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Lectura (kWh)</mat-label>
+      <input matInput type="number" formControlName="lectura_kwh" />
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Lectura (kWh)*</mat-label>
-        <input matInput type="number" formControlName="lectura_kwh"/>
-        <mat-error *ngIf="form.controls['lectura_kwh'].hasError('required')">Campo obligatorio</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Observación (opcional)</mat-label>
+      <input matInput formControlName="observacion" />
+    </mat-form-field>
 
-      <!-- Observación -->
-      <mat-form-field appearance="outline" style="grid-column: 1 / -1;">
-        <mat-label>Observación</mat-label>
-        <textarea matInput formControlName="observacion" rows="2" placeholder="Opcional"></textarea>
-      </mat-form-field>
-    </div>
-
-    <div class="btn-row center">
+    <div class="actions">
       <button mat-flat-button color="primary" type="submit">
-        Registrar lectura
+        <mat-icon>save</mat-icon> Guardar
       </button>
+
+      <!-- No llamamos a cancelar(): navegamos con routerLink -->
+      <a mat-stroked-button color="accent" routerLink="/lecturas">
+        <mat-icon>arrow_back</mat-icon> Volver
+      </a>
     </div>
   </form>
-
-  <!-- Historial en card con tabla estética -->
-  <div class="card section" style="margin-top:16px;">
-    <h2 class="mat-headline-6" style="margin:0 0 8px">Historial</h2>
-
-    <p *ngIf="!historial?.length" class="empty">Sin lecturas para el medidor seleccionado.</p>
-
-    <table *ngIf="historial?.length" class="mat-mdc-table">
-      <thead>
-      <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell">Año</th>
-        <th class="mdc-data-table__header-cell">Mes</th>
-        <th class="mdc-data-table__header-cell">kWh</th>
-        <th class="mdc-data-table__header-cell">Observación</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let l of historial" class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">{{ l.anio }}</td>
-        <td class="mdc-data-table__cell">{{ l.mes }}</td>
-        <td class="mdc-data-table__cell">{{ l.lectura_kwh }}</td>
-        <td class="mdc-data-table__cell">{{ l.observacion || '-' }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
 </div>

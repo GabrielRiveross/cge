@@ -30,12 +30,12 @@ export class MedidorFormComponent implements OnInit {
   private router = inject(Router);
   private snack = inject(MatSnackBar);
 
+  /** ID del medidor (modo edición). Si es undefined => modo creación */
   id?: number;
   titulo = 'Nuevo Medidor';
   clientes: Cliente[] = [];
 
   form = this.fb.group({
-    // ↓↓↓ mínimo 1 para evitar bloqueos por longitud
     codigo_medidor: ['', [Validators.required, Validators.minLength(1)]],
     id_cliente: [null as unknown as number, [Validators.required]],
     direccion_suministro: ['', [Validators.required]],
@@ -43,31 +43,50 @@ export class MedidorFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // Clientes para el select
+    // 1) Cargar clientes del combo
     this.clientesSvc.listar().subscribe({
-      next: (cs: Cliente[]) => this.clientes = cs || [],
-      error: () => {}
+      next: (cs) => (this.clientes = cs || []),
+      error: () => {} // opcional: mostrar snack
     });
 
-    // Si viene :id => edición por ID
-    this.id = Number(this.route.snapshot.paramMap.get('id')) || undefined;
-    if (this.id) {
-      this.titulo = 'Editar Medidor';
-      this.svc.get(this.id).subscribe({
-        next: (m: Medidor) => {
-          this.form.patchValue({
-            codigo_medidor: m.codigo_medidor,
-            id_cliente: m.id_cliente,
-            direccion_suministro: m.direccion_suministro,
-            estado: m.estado
-          });
-        },
-        error: () => {
-          this.snack.open('Medidor no encontrado', 'Cerrar', { duration: 2500 });
+    // 2) Detectar si hay :id válido (numérico)
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const parsed = idParam !== null ? Number(idParam) : NaN;
+
+    if (!Number.isFinite(parsed) || Number.isNaN(parsed)) {
+      // Sin id o id inválido -> modo crear
+      this.id = undefined;
+      this.titulo = 'Nuevo Medidor';
+      return;
+    }
+
+    this.id = parsed;
+    this.titulo = 'Editar Medidor';
+
+    // 3) Cargar datos del medidor
+    this.svc.get(this.id).subscribe({
+      next: (m: Medidor) => {
+        this.form.patchValue({
+          codigo_medidor: m.codigo_medidor,
+          id_cliente: m.id_cliente,
+          direccion_suministro: m.direccion_suministro,
+          estado: m.estado
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar medidor:', error);
+        // Mostrar mensaje de error
+        const errorMsg = error.status === 404 
+          ? 'Medidor no encontrado' 
+          : 'Error al cargar los datos del medidor';
+        this.snack.open(errorMsg, 'Cerrar', { duration: 5000 });
+        
+        // Solo redirigir si es un error 404 (no encontrado)
+        if (error.status === 404) {
           this.router.navigate(['/medidores']);
         }
-      });
-    }
+      }
+    });
   }
 
   guardar() {
@@ -76,19 +95,22 @@ export class MedidorFormComponent implements OnInit {
       this.snack.open('Revisa los campos', 'Cerrar', { duration: 2500 });
       return;
     }
-    const payload: MedidorCreate = this.form.value as MedidorCreate;
 
+    const payload: MedidorCreate = this.form.value as MedidorCreate;
     let req$: Observable<Medidor>;
+
     if (this.id) {
+      // Edición
       req$ = this.svc.actualizar(this.id, payload);
     } else {
+      // Creación
       req$ = this.svc.crear(payload);
     }
 
     req$.subscribe({
       next: () => {
         this.snack.open('Guardado correctamente', 'OK', { duration: 1800 });
-        this.router.navigate(['/medidores']); // ← vuelve a medidores
+        this.router.navigate(['/medidores']);
       },
       error: (e) => {
         const msg = e?.error?.detail || 'Error al guardar';

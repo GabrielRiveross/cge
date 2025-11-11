@@ -7,7 +7,7 @@ import { ClienteFormComponent } from './pages/clientes/cliente-form.component';
 import { MedidoresListComponent } from './pages/medidores/medidores-list.component';
 import { MedidorFormComponent } from './pages/medidores/medidor-form.component';
 
-import { LecturasListComponent } from './pages/lecturas/lectura-list.component';
+import { LecturasListComponent } from './pages/lecturas/lecturas-list.component';
 import { LecturaFormComponent } from './pages/lecturas/lectura-form.component';
 
 export const routes: Routes = [
@@ -28,6 +28,8 @@ export const routes: Routes = [
   // ✅ LECTURAS (ARREGLADO)
   { path: 'lecturas', component: LecturasListComponent },   // LISTADO
   { path: 'lecturas/nueva', component: LecturaFormComponent }, // CREAR
+  { path: 'lecturas/:id', component: LecturaFormComponent },
+
 
   { path: '**', redirectTo: 'boletas' }
 ];

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {Observable} from 'rxjs';
 
 export interface Medidor {
   id_medidor: number;
@@ -8,6 +9,7 @@ export interface Medidor {
   id_cliente: number;
   direccion_suministro: string;
   estado: boolean;
+
 }
 
 export interface MedidorCreate {
@@ -35,8 +37,8 @@ export class MedidoresService {
     return this.http.post<Medidor>(this.base, data);
   }
 
-  actualizar(id: number, data: MedidorCreate) {
-    return this.http.put<Medidor>(`${this.base}/${id}`, data);
+  actualizar(id: number, payload: MedidorCreate): Observable<Medidor> {
+    return this.http.put<Medidor>(`${this.base}/${id}`, payload);
   }
 
   eliminar(id: number) {

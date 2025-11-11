@@ -1,25 +1,23 @@
 <div class="container">
   <h1 class="page-title">Lecturas</h1>
 
-  <div class="card section">
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="medidor-input">
+      <mat-label>ID de medidor</mat-label>
+      <input matInput type="number" [(ngModel)]="idMedidor" />
+    </mat-form-field>
 
-    <!-- Barra superior -->
-    <div class="toolbar">
-      <mat-form-field appearance="outline" class="medidor-input">
-        <mat-label>ID de medidor</mat-label>
-        <input matInput type="number" [(ngModel)]="idMedidor" />
-      </mat-form-field>
+    <div class="btn-row">
+      <button mat-flat-button color="primary" type="button" (click)="buscar()">
+        <mat-icon>search</mat-icon> Buscar
+      </button>
 
-      <div class="btn-row">
-        <button mat-flat-button color="primary" (click)="buscar()">
-          <mat-icon>search</mat-icon> Buscar
-        </button>
-
-        <a mat-flat-button color="accent" routerLink="/lecturas/nueva">
-          <mat-icon>add</mat-icon> Nueva lectura
-        </a>
-      </div>
+      <!-- Enlace que navega al form de nueva lectura -->
+      <a mat-flat-button color="accent" routerLink="/lecturas/nueva" role="link">
+        <mat-icon>add</mat-icon> Nueva lectura
+      </a>
     </div>
+  </div>
 
     <!-- Tabla -->
     <table mat-table [dataSource]="data" class="mat-mdc-table table--lecturas">
@@ -54,4 +52,4 @@
     </p>
 
   </div>
-</div>
+
