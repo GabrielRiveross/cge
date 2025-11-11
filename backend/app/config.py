@@ -1,6 +1,8 @@
 # app/config.py
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
+from typing import Optional  # ✅ necesario para Python 3.9
+
 
 class Settings(BaseSettings):
     APP_NAME: str = "CGE Backend"
@@ -13,10 +15,11 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
-    SMTP_HOST: str | None = None
-    SMTP_PORT: int | None = None
-    SMTP_USER: str | None = None
-    SMTP_PASSWORD: str | None = None
+    # ✅ Cambiado: usar Optional en lugar de str | None / int | None
+    SMTP_HOST: Optional[str] = None
+    SMTP_PORT: Optional[int] = None
+    SMTP_USER: Optional[str] = None
+    SMTP_PASSWORD: Optional[str] = None
     SMTP_TLS: bool = True
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", env_ignore_empty=True)
@@ -34,7 +37,10 @@ class Settings(BaseSettings):
 
     @property
     def DATABASE_URL(self) -> str:
-        return (f"{self.DB_DIALECT}://{self.DB_USER}:{self.DB_PASSWORD}"
-                f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}")
+        return (
+            f"{self.DB_DIALECT}://{self.DB_USER}:{self.DB_PASSWORD}"
+            f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
+
 
 settings = Settings()

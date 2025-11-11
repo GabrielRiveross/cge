@@ -4,7 +4,9 @@
   <div style="display:flex; gap:8px; align-items:center; margin: 12px 0;">
     <mat-form-field appearance="outline" style="flex:1;">
       <mat-label>Buscar por RUT o Nombre</mat-label>
-      <input matInput [(ngModel)]="q" (keyup.enter)="buscar()">
+
+      <!-- ✅ Ahora usa guardarFiltro() en lugar de localStorage directo -->
+      <input matInput [(ngModel)]="q" (keyup.enter)="buscar()" (input)="guardarFiltro()">
     </mat-form-field>
 
     <button mat-flat-button color="primary" (click)="buscar()">

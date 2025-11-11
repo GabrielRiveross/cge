@@ -27,21 +27,25 @@ export class ClientesListComponent implements OnInit {
 
   displayedColumns = ['rut', 'nombre', 'email', 'estado', 'acciones'];
   data: Cliente[] = [];
+
   q = localStorage.getItem('filtroClientes') || '';
 
   ngOnInit(): void {
     this.buscar();
   }
 
+  guardarFiltro() {
+    localStorage.setItem('filtroClientes', this.q);
+  }
+
   buscar() {
+    this.guardarFiltro();
     const q = (this.q || '').trim();
     this.svc.listar(q).subscribe({
-      next: (res) => {
-        this.data = res;
-      },
+      next: (res) => this.data = res,
       error: () => {
         this.data = [];
-        this.snack.open('Error al cargar', 'Cerrar', {duration: 3000});
+        this.snack.open('Error al cargar', 'Cerrar', { duration: 3000 });
       }
     });
   }
@@ -58,11 +62,11 @@ export class ClientesListComponent implements OnInit {
     if (!confirm(`¿Eliminar cliente ${c.nombre_razon}?`)) return;
     this.svc.eliminar(c.id_cliente).subscribe({
       next: _ => {
-        this.snack.open('Eliminado', 'OK', {duration: 2000});
-        this.buscar(); // <- vuelve a pedir al backend (consistencia garantizada)
+        this.snack.open('Eliminado', 'OK', { duration: 2000 });
+        this.buscar();
       },
       error: e => {
-        this.snack.open(e?.error?.detail || 'No se pudo eliminar', 'Cerrar', {duration: 3000});
+        this.snack.open(e?.error?.detail || 'No se pudo eliminar', 'Cerrar', { duration: 3000 });
       }
     });
   }
