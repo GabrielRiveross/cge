@@ -49,20 +49,28 @@ export class ClienteMapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initMarkers(): void {
+    console.log("Medidores recibidos:", this.medidores);
+
     if (!this.map || !this.medidores?.length) return;
 
     this.medidores.forEach((m: Medidor) => {
-      if (m.latitud == null || m.longitud == null) return;
+      console.log("Medidor coors:", m.codigo_medidor, m.latitud, m.longitud);
+
+      if (m.latitud == null || m.longitud == null) {
+        console.warn("Sin coordenadas, no se dibuja:", m);
+        return;
+      }
 
       const marker = L.marker([m.latitud, m.longitud]).addTo(this.map!);
       marker.bindPopup(`
-        <b>${m.codigo_medidor}</b><br>
-        ${m.direccion_suministro}<br>
-        Estado: ${m.estado ? 'Activo' : 'Inactivo'}<br>
-        Cliente: ${this.cliente?.nombre_razon ?? ''}
-      `);
+      <b>${m.codigo_medidor}</b><br>
+      ${m.direccion_suministro}<br>
+      Estado: ${m.estado ? 'Activo' : 'Inactivo'}<br>
+      Cliente: ${this.cliente?.nombre_razon ?? ''}
+    `);
     });
   }
+
 
   ngOnDestroy(): void {
     this.map?.remove();

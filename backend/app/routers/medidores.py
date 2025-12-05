@@ -1,20 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from starlette import status
+
 from ..database import get_db
 from .. import models, schemas
 
 router = APIRouter(prefix="/api/medidores", tags=["Medidores"])
 
 
-@router.post("", response_model=schemas.MedidorOut)
-def create_medidor(payload: schemas.MedidorCreate, db: Session = Depends(get_db)):
-    # Código único
-    if db.query(models.Medidor).filter_by(codigo_medidor=payload.codigo_medidor).first():
-        raise HTTPException(status_code=409, detail="Código de medidor ya existe")
-    # Cliente debe existir
-    if not db.get(models.Cliente, payload.id_cliente):
-        raise HTTPException(status_code=404, detail="Cliente no existe")
-    obj = models.Medidor(**payload.model_dump())
+@router.post("/", response_model=schemas.MedidorOut, status_code=status.HTTP_201_CREATED)
+def crear_medidor(payload: schemas.MedidorCreate, db: Session = Depends(get_db)):
+    # payload ya trae latitud/longitud porque están en MedidorCreate
+    data = payload.model_dump()
+    obj = models.Medidor(**data)
     db.add(obj)
     db.commit()
     db.refresh(obj)
@@ -46,11 +44,8 @@ def get_medidor(id: int, db: Session = Depends(get_db)):
     obj = db.get(models.Medidor, id)
     if not obj:
         raise HTTPException(status_code=404, detail="Medidor no existe")
-    if obj.cliente:
-        setattr(obj, "cliente_nombre", obj.cliente.nombre_razon)
-    else:
-        setattr(obj, "cliente_nombre", None)
     return obj
+
 
 
 @router.get("/por-cliente/{id_cliente}", response_model=list[schemas.MedidorOut])
@@ -58,12 +53,12 @@ def listar_por_cliente(id_cliente: int, db: Session = Depends(get_db)):
     if not db.get(models.Cliente, id_cliente):
         raise HTTPException(status_code=404, detail="Cliente no existe")
 
-    return (
+    objetos = (
         db.query(models.Medidor)
         .filter(models.Medidor.id_cliente == id_cliente)
         .all()
     )
-
+    return objetos
 
 @router.put("/{id}", response_model=schemas.MedidorOut)
 def update_medidor(id: int, payload: schemas.MedidorCreate, db: Session = Depends(get_db)):

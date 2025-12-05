@@ -30,7 +30,7 @@ export class MedidoresService {
   constructor(private http: HttpClient) {}
 
   listar() {
-    return this.http.get<Medidor[]>(this.base);
+    return this.http.get<Medidor[]>(`${this.base}`);
   }
 
   get(id: number) {
@@ -38,19 +38,19 @@ export class MedidoresService {
   }
 
   crear(data: MedidorCreate) {
-    return this.http.post<Medidor>(this.base, data);
+    return this.http.post<Medidor>(`${this.base}/`, data);
   }
 
-  actualizar(id: number, payload: MedidorCreate): Observable<Medidor> {
+  actualizar(id: number, payload: MedidorCreate) {
     return this.http.put<Medidor>(`${this.base}/${id}`, payload);
   }
 
   eliminar(id: number) {
-    return this.http.delete<{ ok: boolean }>(`${this.base}/${id}`);
+    return this.http.delete(`${this.base}/${id}`);
   }
 
-  listarPorCliente(idCliente: number): Observable<Medidor[]> {
-    return this.http.get<Medidor[]>(`${this.base}/por-cliente/${idCliente}`);
+  listarPorCliente(idCliente: number) {
+    return this.http.get<Medidor[]>(`${this.base}/por-cliente/${idCliente}`)
     }
 
 }

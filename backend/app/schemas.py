@@ -36,22 +36,32 @@ class MedidorBase(BaseModel):
     direccion_suministro: str
     estado: bool = True
 
+    # 👇 deben estar aquí
+    latitud: Optional[float] = None
+    longitud: Optional[float] = None
+
+
 class MedidorCreate(MedidorBase):
+    """Usado en POST /medidores"""
     pass
 
-class MedidorUpdate(MedidorBase):
-    pass
+
+class MedidorUpdate(BaseModel):
+    """Usado en PUT /medidores/{id} – campos editables"""
+    codigo_medidor: Optional[str] = None
+    id_cliente: Optional[int] = None
+    direccion_suministro: Optional[str] = None
+    estado: Optional[bool] = None
+    latitud: Optional[float] = None
+    longitud: Optional[float] = None
+
 
 class MedidorOut(MedidorBase):
     id_medidor: int
     cliente_nombre: Optional[str] = None
+
     class Config:
         from_attributes = True
-
-class MedidorRowOut(MedidorOut):
-    # Extiende lo que ya devuelves para incluir el nombre del cliente
-    cliente_nombre: str
-
 
 # =========================
 # LECTURA (ALINEADO CON EL FRONT)

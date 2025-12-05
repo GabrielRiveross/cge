@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
 from .database import Base
 
+
+## CLIENTE ##
 class Cliente(Base):
     __tablename__ = "cliente"
     id_cliente: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -18,25 +20,42 @@ class Cliente(Base):
     medidores: Mapped[list["Medidor"]] = relationship(back_populates="cliente", cascade="all, delete-orphan")
     boletas: Mapped[list["Boleta"]] = relationship(back_populates="cliente", cascade="all, delete-orphan")
 
+## CLIENTE ##
+
+
+## MEDIDOR ##
 class Medidor(Base):
     __tablename__ = "medidor"
+
     id_medidor: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     codigo_medidor: Mapped[str] = mapped_column(String(50), unique=True, index=True)
-    id_cliente: Mapped[int] = mapped_column(ForeignKey("cliente.id_cliente", ondelete="CASCADE"))
+    id_cliente: Mapped[int] = mapped_column(
+        ForeignKey("cliente.id_cliente", ondelete="CASCADE")
+    )
     direccion_suministro: Mapped[str] = mapped_column(String(250))
     estado: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    # 👇 COORDENADAS
     latitud: Mapped[float | None] = mapped_column(DECIMAL(10, 6), nullable=True)
     longitud: Mapped[float | None] = mapped_column(DECIMAL(10, 6), nullable=True)
+
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     cliente: Mapped["Cliente"] = relationship(back_populates="medidores")
-    lecturas: Mapped[list["LecturaConsumo"]] = relationship(back_populates="medidor", cascade="all, delete-orphan")
+    lecturas: Mapped[list["LecturaConsumo"]] = relationship(
+        back_populates="medidor", cascade="all, delete-orphan"
+    )
 
     @property
     def cliente_nombre(self) -> str | None:
         return self.cliente.nombre_razon if self.cliente else None
+## MEDIDOR ##
 
+
+## LECTURA ##
 class LecturaConsumo(Base):
     __tablename__ = "lectura_consumo"
     id_lectura: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -50,6 +69,9 @@ class LecturaConsumo(Base):
     __table_args__ = (UniqueConstraint("id_medidor", "anio", "mes", name="uq_medidor_mes"),)
     medidor: Mapped["Medidor"] = relationship(back_populates="lecturas")
 
+## LECTURA ##
+
+## BOLETA ##
 class Boleta(Base):
     __tablename__ = "boleta"
     id_boleta: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -66,3 +88,5 @@ class Boleta(Base):
 
     __table_args__ = (UniqueConstraint("id_cliente", "anio", "mes", name="uq_cliente_mes"),)
     cliente: Mapped["Cliente"] = relationship(back_populates="boletas")
+
+## BOLETA ##
