@@ -12,6 +12,8 @@ class ClienteBase(BaseModel):
     telefono: Optional[str] = None
     direccion_facturacion: Optional[str] = None
     estado: bool = True
+    latitud: Optional[float] = None
+    longitud: Optional[float] = None
 
 class ClienteCreate(ClienteBase):
     pass

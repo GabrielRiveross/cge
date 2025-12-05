@@ -9,6 +9,8 @@ export interface Medidor {
   id_cliente: number;
   direccion_suministro: string;
   estado: boolean;
+  latitud?: number | null;
+  longitud?: number | null;
 
 }
 
@@ -17,6 +19,8 @@ export interface MedidorCreate {
   id_cliente: number;
   direccion_suministro: string;
   estado: boolean;
+  latitud?: number | null;
+  longitud?: number | null;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -44,4 +48,9 @@ export class MedidoresService {
   eliminar(id: number) {
     return this.http.delete<{ ok: boolean }>(`${this.base}/${id}`);
   }
+
+  listarPorCliente(idCliente: number): Observable<Medidor[]> {
+    return this.http.get<Medidor[]>(`${this.base}/por-cliente/${idCliente}`);
+    }
+
 }

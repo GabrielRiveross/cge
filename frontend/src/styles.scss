@@ -1,4 +1,11 @@
 /* ===================== CGE · Dim Soft · Opción 3 ===================== */
+@import "leaflet/dist/leaflet.css";
+
+/* opcional: altura por defecto */
+.leaflet-container {
+  width: 100%;
+  height: 400px;
+}
 /* Paleta oscura suave, coherente y accesible */
 :root{
   --bg:#0f1116;      /* fondo general */

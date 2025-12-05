@@ -53,6 +53,7 @@
       <span class="btn-row">
         <button mat-stroked-button (click)="editar(c)">Editar</button>
         <button mat-stroked-button color="warn" (click)="eliminar(c)">Eliminar</button>
+        <button mat-stroked-button color="primary" [routerLink]="['/clientes', c.id_cliente, 'mapa']">Ver mapa</button>
       </span>
         </td>
       </ng-container>

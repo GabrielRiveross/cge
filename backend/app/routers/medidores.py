@@ -53,6 +53,18 @@ def get_medidor(id: int, db: Session = Depends(get_db)):
     return obj
 
 
+@router.get("/por-cliente/{id_cliente}", response_model=list[schemas.MedidorOut])
+def listar_por_cliente(id_cliente: int, db: Session = Depends(get_db)):
+    if not db.get(models.Cliente, id_cliente):
+        raise HTTPException(status_code=404, detail="Cliente no existe")
+
+    return (
+        db.query(models.Medidor)
+        .filter(models.Medidor.id_cliente == id_cliente)
+        .all()
+    )
+
+
 @router.put("/{id}", response_model=schemas.MedidorOut)
 def update_medidor(id: int, payload: schemas.MedidorCreate, db: Session = Depends(get_db)):
     obj = db.get(models.Medidor, id)

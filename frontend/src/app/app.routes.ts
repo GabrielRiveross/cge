@@ -3,12 +3,14 @@ import { BoletasComponent } from './pages/boletas/boletas.component';
 
 import { ClientesListComponent } from './pages/clientes/clientes-list.component';
 import { ClienteFormComponent } from './pages/clientes/cliente-form.component';
+import { ClienteMapComponent } from './pages/clientes/cliente-map.component';
 
 import { MedidoresListComponent } from './pages/medidores/medidores-list.component';
 import { MedidorFormComponent } from './pages/medidores/medidor-form.component';
 
 import { LecturasListComponent } from './pages/lecturas/lecturas-list.component';
 import { LecturaFormComponent } from './pages/lecturas/lectura-form.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'boletas', pathMatch: 'full' },
@@ -19,6 +21,8 @@ export const routes: Routes = [
   { path: 'clientes', component: ClientesListComponent },
   { path: 'clientes/nuevo', component: ClienteFormComponent },
   { path: 'clientes/editar/:id', component: ClienteFormComponent },
+  { path: 'clientes/:id/mapa', component: ClienteMapComponent },
+
 
   // MEDIDORES
   { path: 'medidores', component: MedidoresListComponent },

@@ -25,6 +25,8 @@ class Medidor(Base):
     id_cliente: Mapped[int] = mapped_column(ForeignKey("cliente.id_cliente", ondelete="CASCADE"))
     direccion_suministro: Mapped[str] = mapped_column(String(250))
     estado: Mapped[bool] = mapped_column(Boolean, default=True)
+    latitud: Mapped[float | None] = mapped_column(DECIMAL(10, 6), nullable=True)
+    longitud: Mapped[float | None] = mapped_column(DECIMAL(10, 6), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

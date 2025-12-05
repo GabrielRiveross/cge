@@ -39,7 +39,9 @@ export class MedidorFormComponent implements OnInit {
     codigo_medidor: ['', [Validators.required, Validators.minLength(1)]],
     id_cliente: [null as unknown as number, [Validators.required]],
     direccion_suministro: ['', [Validators.required]],
-    estado: [true]
+    estado: [true],
+    latitud: [null as unknown as number, [Validators.min(-90), Validators.max(90)]],
+    longitud: [null as unknown as number, [Validators.min(-180), Validators.max(180)]],
   });
 
   ngOnInit(): void {
@@ -76,11 +78,11 @@ export class MedidorFormComponent implements OnInit {
       error: (error) => {
         console.error('Error al cargar medidor:', error);
         // Mostrar mensaje de error
-        const errorMsg = error.status === 404 
-          ? 'Medidor no encontrado' 
+        const errorMsg = error.status === 404
+          ? 'Medidor no encontrado'
           : 'Error al cargar los datos del medidor';
         this.snack.open(errorMsg, 'Cerrar', { duration: 5000 });
-        
+
         // Solo redirigir si es un error 404 (no encontrado)
         if (error.status === 404) {
           this.router.navigate(['/medidores']);
