@@ -1,0 +1,53 @@
+<form class="card section" [formGroup]="form" (ngSubmit)="guardar()">
+  <div class="toolbar" style="margin:0">
+    <span class="mat-body-1" style="color:var(--muted)">Define el medidor y su cliente</span>
+    <a mat-stroked-button routerLink="/medidores">Volver</a>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Código de medidor</mat-label>
+    <input matInput formControlName="codigo_medidor" minlength="1">
+    <mat-hint>Debe tener al menos 1 dígito</mat-hint>
+    <mat-error *ngIf="form.controls.codigo_medidor.hasError('required')">Obligatorio</mat-error>
+  </mat-form-field>
+
+  <div class="toolbar" style="gap:12px">
+    <mat-form-field appearance="outline" style="flex:1 1 50%">
+      <mat-label>Cliente</mat-label>
+      <mat-select formControlName="id_cliente">
+        <mat-option *ngFor="let c of clientes" [value]="c.id_cliente">
+          {{ c.nombre_razon }} ({{ c.rut }})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.id_cliente.hasError('required')">Obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex:1 1 50%">
+      <mat-label>Dirección de suministro</mat-label>
+      <input matInput formControlName="direccion_suministro">
+      <mat-error *ngIf="form.controls.direccion_suministro.hasError('required')">Obligatorio</mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- NUEVO: Latitud y Longitud -->
+  <div class="toolbar" style="gap:12px">
+    <mat-form-field appearance="outline" style="flex:1">
+      <mat-label>Latitud</mat-label>
+      <input matInput formControlName="latitud" type="number" step="0.000001" placeholder="-35.4289">
+      <mat-hint>Opcional para mostrar en mapa</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex:1">
+      <mat-label>Longitud</mat-label>
+      <input matInput formControlName="longitud" type="number" step="0.000001" placeholder="-71.6543">
+      <mat-hint>Opcional para mostrar en mapa</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <mat-slide-toggle formControlName="estado">Activo</mat-slide-toggle>
+
+  <div class="btn-row center">
+    <button mat-flat-button color="primary" type="submit">Guardar</button>
+    <button mat-stroked-button type="button" routerLink="/medidores">Cancelar</button>
+  </div>
+</form>

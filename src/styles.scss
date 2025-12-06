@@ -1,0 +1,400 @@
+@import 'leaflet/dist/leaflet.css';
+
+/* ===================== CGE · Dim Soft · Opción 3 ===================== */
+:root {
+  --bg:        #0f1116;
+  --bg-2:      #151823;
+  --panel:     #181b26;
+  --panel-2:   #1c2030;
+  --text:      #e8edf7;
+  --muted:     #a7b2c5;
+  --bd:        #2a3040;
+
+  --primary:   #6da0ff;
+  --primary-600:#5587ea;
+  --accent:    #c4a8ff;
+  --accent-600:#a98cf2;
+
+  --success:   #4dd59a;
+  --warn:      #f2b56a;
+  --danger:    #ff6b6b;
+
+  --radius:    16px;
+  --shadow:    0 14px 40px rgba(0,0,0,.45);
+
+  --container: 1080px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body{
+  margin:0;
+  background:
+    radial-gradient(1400px 700px at 15% -15%, rgba(109,160,255,.08), transparent 60%),
+    radial-gradient(1200px 600px at 110% -10%, rgba(196,168,255,.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Helvetica Neue",sans-serif;
+}
+:focus-visible{
+  outline:3px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset:2px;
+}
+
+/* ---------------- Layout ---------------- */
+
+.container{
+  max-width:var(--container);
+  margin-inline:auto;
+  padding:clamp(16px,2.2vw,24px);
+}
+
+.page-title{
+  margin:22px 0 14px;
+  font-size:clamp(28px,4vw,44px);
+  font-weight:900;
+  letter-spacing:.3px;
+}
+
+.card{
+  background:linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--panel) 95%, transparent),
+      var(--panel)
+  );
+  border:1px solid var(--bd);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:clamp(14px,2vw,22px);
+}
+
+.section{display:grid; gap:12px;}
+
+.page-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  margin:18px 0 6px;
+}
+
+.section-title{
+  margin:0;
+  font-size:clamp(16px,2.2vw,18px);
+  font-weight:800;
+}
+
+.section-subtitle{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:.9rem;
+}
+
+.toolbar{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  margin:6px 0 8px;
+}
+.toolbar .mat-mdc-form-field{
+  min-width:280px;
+  flex:1 1 380px;
+}
+
+.btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+.center{justify-content:center;}
+
+.empty{
+  margin-top:14px;
+  text-align:center;
+  color:var(--muted);
+  font-size:.95rem;
+}
+
+/* ---------------- Botones ---------------- */
+
+.mdc-button{
+  border-radius:999px;
+  text-transform:none;
+  font-weight:800;
+  position:relative;
+}
+.mdc-button .mat-icon{
+  font-size:18px;
+  height:18px;
+  width:18px;
+  margin-right:6px;
+}
+
+.mdc-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button{
+  --mdc-text-button-container-height:36px;
+  --mdc-filled-button-container-height:36px;
+  --mdc-outlined-button-container-height:36px;
+}
+
+.mdc-button--unelevated{
+  --mdc-filled-button-container-color:var(--primary);
+  --mdc-filled-button-label-text-color:#fff;
+}
+
+.mat-mdc-outlined-button{
+  --mdc-outlined-button-outline-color:color-mix(in oklab, var(--primary) 70%, var(--bd));
+  --mdc-outlined-button-label-text-color:var(--primary);
+  background:transparent;
+}
+
+/* Eliminar */
+.mat-mdc-outlined-button.mat-warn{
+  --mdc-outlined-button-outline-color:color-mix(in oklab, var(--danger) 70%, var(--bd));
+  --mdc-outlined-button-label-text-color:var(--danger);
+  background:color-mix(in oklab, var(--danger) 10%, transparent);
+}
+.mat-mdc-outlined-button.mat-warn:hover{
+  background:color-mix(in oklab, var(--danger) 15%, transparent);
+}
+
+.mdc-button mat-icon{
+  font-size:18px;
+  margin-right:6px;
+  opacity:.85;
+}
+
+/* ---------------- Inputs ---------------- */
+
+.mdc-text-field--outlined{
+  --mdc-outlined-text-field-container-shape:12px;
+  --mdc-outlined-text-field-outline-color:var(--bd);
+  --mdc-outlined-text-field-hover-outline-color:color-mix(in oklab, var(--primary) 45%, var(--bd));
+  --mdc-outlined-text-field-focus-outline-color:var(--primary);
+  --mdc-outlined-text-field-input-text-color:var(--text);
+  --mdc-outlined-text-field-label-text-color:var(--muted);
+  --mdc-outlined-text-field-focus-label-text-color:var(--primary);
+  background:color-mix(in oklab, var(--panel) 88%, transparent);
+}
+.mat-mdc-form-field-error{color:var(--danger);}
+.mat-mdc-form-field-hint{color:var(--muted);}
+
+/* ---------------- Chips ---------------- */
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.85rem;
+  font-weight:800;
+  background:color-mix(in oklab, var(--panel) 75%, var(--bg));
+  border:1px solid var(--bd);
+  color:var(--text);
+}
+.chip--ok{
+  background:color-mix(in oklab, var(--success) 22%, var(--panel));
+  border-color:color-mix(in oklab, var(--success) 35%, var(--bd));
+}
+.chip--warn{
+  background:color-mix(in oklab, var(--warn) 22%, var(--panel));
+  border-color:color-mix(in oklab, var(--warn) 35%, var(--bd));
+}
+
+/* ---------------- Tablas: base ---------------- */
+
+/* Contenedor: sin barras internas raras */
+.table-wrap{
+  width:100%;
+  max-width:100%;
+  overflow:hidden;      /* nada de scroll interno */
+  border-radius:16px;
+}
+.table--elev{box-shadow:var(--shadow);}
+
+/* Tabla como tabla normal (NO grid) */
+.mat-mdc-table{
+  width:100%;
+  border-collapse:collapse;
+  background:linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--panel) 92%, transparent),
+      var(--panel)
+  );
+  border:1px solid var(--bd);
+  border-radius:16px;
+}
+
+/* Filas: table-row (no grid) */
+.mdc-data-table__header-row,
+.mdc-data-table__row{
+  display:table-row;
+}
+
+/* Celdas */
+.mdc-data-table__header-cell,
+.mdc-data-table__cell{
+  padding:12px 14px !important;
+  border-bottom:1px solid color-mix(in oklab, var(--bd) 55%, transparent);
+  color:var(--text);
+  text-align:center;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+
+/* Header */
+.mdc-data-table__header-cell{
+  color:var(--muted);
+  font-weight:900;
+  letter-spacing:.35px;
+  background:linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--panel-2) 80%, var(--panel)),
+      var(--panel)
+  );
+  border-bottom:1px solid color-mix(in oklab, var(--bd) 80%, transparent);
+}
+
+/* Separadores verticales */
+.mdc-data-table__header-cell + .mdc-data-table__header-cell,
+.mdc-data-table__cell + .mdc-data-table__cell{
+  border-left:1px solid color-mix(in oklab, var(--bd) 65%, transparent);
+}
+
+/* No cortar contenido (chips, sombras…) */
+.mdc-data-table__row,
+.mat-mdc-row,
+.mdc-data-table__cell,
+.mat-mdc-cell{
+  overflow:visible !important;
+}
+
+/* Zebra + hover */
+.mat-mdc-table .mat-mdc-row:nth-child(2n){
+  background:color-mix(in oklab, var(--panel) 94%, var(--bg-2));
+}
+.mat-mdc-table .mat-mdc-row:hover{
+  background:color-mix(in oklab, var(--primary) 10%, var(--panel));
+}
+
+/* Primer / último col: padding un poco mayor */
+.mdc-data-table__header-cell:first-child,
+.mdc-data-table__cell:first-child{
+  padding-left:20px !important;
+}
+.mdc-data-table__header-cell:last-child,
+.mdc-data-table__cell:last-child{
+  padding-right:20px !important;
+}
+
+/* ---------------- Medidores ---------------- */
+/* Columnas: código | cliente | dirección | latitud | longitud | estado | acciones */
+
+.table--medidores .mdc-data-table__header-cell,
+.table--medidores .mdc-data-table__cell{
+  font-size:.9rem;
+}
+
+/* anchos mínimos pequeños para que todo quepa */
+.mat-column-codigo{ min-width:70px; text-align:left; }
+.mat-column-cliente{ min-width:90px; text-align:left; }
+.mat-column-direccion{ min-width:120px; text-align:left; }
+.mat-column-latitud,
+.mat-column-longitud,
+.mat-column-estado{
+  min-width:80px;
+  text-align:center;
+}
+
+/* Acciones: una fila, compactas, alineadas a la derecha */
+.mat-column-acciones{
+  min-width:150px;
+  text-align:right !important;
+  white-space:nowrap;
+}
+
+.mat-column-acciones .btn-row{
+  display:inline-flex;
+  flex-wrap:nowrap;
+  gap:6px;
+  justify-content:flex-end;
+  align-items:center;
+}
+
+.mat-column-acciones .mdc-button{
+  flex:0 0 auto;
+  padding-inline:6px 8px;
+  font-size:.78rem;
+}
+
+/* ---------------- Otras tablas (boletas, clientes, etc.) ---------------- */
+
+.table--boletas .mat-column-id,
+.table--boletas .mat-column-periodo{
+  text-align:center;
+}
+.table--boletas .mat-column-kwh,
+.table--boletas .mat-column-total{
+  text-align:right;
+}
+
+.table--clientes .mat-column-rut,
+.table--clientes .mat-column-nombre,
+.table--clientes .mat-column-email{
+  text-align:left;
+}
+
+/* Lecturas: dar más espacio a observación */
+.table--lecturas .mat-column-observacion{
+  min-width:200px;
+  text-align:left;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 900px){
+  .mat-column-acciones{
+    white-space:normal;    /* si la pantalla es chica, que puedan saltar a 2 filas */
+  }
+  .mat-column-acciones .btn-row{
+    flex-wrap:wrap;
+  }
+}
+
+@media (max-width: 740px){
+  .mdc-data-table__header-cell,
+  .mdc-data-table__cell{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* ---------------- Utilidades ---------------- */
+
+.mono{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+}
+
+.table-head .mdc-data-table__header-cell{
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+
+.medidor-input{
+  width:240px !important;
+  flex:0 0 240px;
+}
+
+/* ---------- Estilos mapa Leaflet ---------- */
+#map {
+  width: 100%;
+  height: 480px; /* puedes ajustar si quieres */
+  border-radius: 12px;
+  border: 1px solid var(--bd);
+  box-shadow: var(--shadow);
+  background: var(--panel);
+}

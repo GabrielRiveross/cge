@@ -1,0 +1,28 @@
+.container {
+  padding: 1rem 1.25rem;
+}
+
+.page-title {
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.medidor-input {
+  width: 220px;
+}
+
+.btn-row {
+  display: flex;
+  gap: .75rem;
+}
+
+.btn-row, .toolbar, a[mat-flat-button], button[mat-flat-button]{
+  pointer-events: auto; // evita bloqueos de click si hay overlays accidentales
+}

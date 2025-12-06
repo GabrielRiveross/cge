@@ -1,0 +1,52 @@
+<!-- Toolbar superior -->
+<mat-toolbar color="primary" style="position: sticky; top: 0; z-index: 10;">
+  <span style="font-weight: 600;">CGE App</span>
+
+  <span style="flex:1 1 auto;"></span>
+
+  <!-- Navegación -->
+  <a mat-button routerLink="/boletas" routerLinkActive="active-link" aria-label="Ir a Boletas">
+    <mat-icon>receipt_long</mat-icon>
+    Boletas
+  </a>
+  <a mat-button routerLink="/clientes" routerLinkActive="active-link" aria-label="Ir a Clientes">
+    <mat-icon>people</mat-icon>
+    Clientes
+  </a>
+  <a mat-button routerLink="/medidores" routerLinkActive="active-link" aria-label="Ir a Medidores">
+    <mat-icon>speed</mat-icon>
+    Medidores
+  </a>
+  <a mat-button routerLink="/lecturas" routerLinkActive="active-link" aria-label="Ir a Lecturas">
+    <mat-icon>edit_note</mat-icon>
+    Lecturas
+  </a>
+
+  <span style="flex:0 0 12px;"></span>
+
+  <!-- Tema -->
+  <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="dark ? 'Tema claro' : 'Tema oscuro'">
+    <mat-icon>{{ dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Contenido -->
+<main style="padding:16px;">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Estilos mínimos para link activo y tema oscuro -->
+<style>
+  .active-link {
+    background: rgba(255,255,255,0.16);
+    border-radius: 8px;
+  }
+  /* Tema oscuro simple: invierte fondo/texto usando la clase en <body> */
+  body.dark-theme {
+    background: #121212;
+    color: #e5e5e5;
+  }
+  body.dark-theme a, body.dark-theme .mat-mdc-button, body.dark-theme .mat-mdc-outlined-button {
+    color: #e5e5e5 !important;
+  }
+</style>

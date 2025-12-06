@@ -1,0 +1,29 @@
+<div class="container">
+  <header class="page-head">
+    <h1 class="page-title">Mapa de medidores del cliente {{ idCliente }}</h1>
+  </header>
+
+  <section class="card section">
+    <div class="page-head" style="margin-top: 0;">
+      <h2 class="section-title">Medidores georreferenciados</h2>
+
+      <button mat-stroked-button color="primary" routerLink="/clientes">
+        Volver a clientes
+      </button>
+    </div>
+
+    <p class="section-subtitle">
+      Se muestran sólo los medidores de este cliente que tienen latitud y longitud.
+    </p>
+
+    <!-- Contenedor del mapa SIEMPRE presente -->
+    <div id="map"></div>
+
+    <!-- Mensajes superpuestos / debajo -->
+    <p class="empty" *ngIf="cargando">Cargando mapa…</p>
+
+    <p class="empty" *ngIf="!cargando && sinCoordenadas">
+      Este cliente no tiene medidores con coordenadas registradas.
+    </p>
+  </section>
+</div>

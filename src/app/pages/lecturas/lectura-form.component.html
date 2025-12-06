@@ -1,0 +1,45 @@
+<div class="container">
+  <h1 class="page-title">
+    <mat-icon>add</mat-icon>
+    Nueva lectura
+  </h1>
+
+  <!-- usa registrar() que sí existe en tu TS -->
+  <form class="grid" [formGroup]="form" (ngSubmit)="registrar()">
+    <mat-form-field appearance="outline">
+      <mat-label>ID medidor</mat-label>
+      <input matInput type="number" formControlName="id_medidor" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Año</mat-label>
+      <input matInput type="number" formControlName="anio" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mes</mat-label>
+      <input matInput type="number" formControlName="mes" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Lectura (kWh)</mat-label>
+      <input matInput type="number" formControlName="lectura_kwh" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Observación (opcional)</mat-label>
+      <input matInput formControlName="observacion" />
+    </mat-form-field>
+
+    <div class="actions">
+      <button mat-flat-button color="primary" type="submit">
+        <mat-icon>save</mat-icon> Guardar
+      </button>
+
+      <!-- No llamamos a cancelar(): navegamos con routerLink -->
+      <a mat-stroked-button color="accent" routerLink="/lecturas">
+        <mat-icon>arrow_back</mat-icon> Volver
+      </a>
+    </div>
+  </form>
+</div>
