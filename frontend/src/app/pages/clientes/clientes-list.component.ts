@@ -1,73 +1,78 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ClientesService, Cliente } from '../../services/clientes.service';
+import { ClientesService, ClienteCreate } from '../../services/clientes.service';
+import { rutPersonaValidator, formatRut } from '../../shared/validators/rut.validator';
 
 @Component({
-  selector: 'app-clientes-list',
+  selector: 'app-cliente-form',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, RouterLink,
-    MatTableModule, MatButtonModule, MatIconModule,
-    MatFormFieldModule, MatInputModule, MatSnackBarModule
+    CommonModule, ReactiveFormsModule, RouterLink,
+    MatFormFieldModule, MatInputModule, MatSlideToggleModule,
+    MatButtonModule, MatSnackBarModule
   ],
-  templateUrl: './clientes-list.component.html'
+  templateUrl: './cliente-form.component.html'
 })
-export class ClientesListComponent implements OnInit {
+export class ClienteFormComponent implements OnInit {
+  private fb = inject(FormBuilder);
   private svc = inject(ClientesService);
-  private snack = inject(MatSnackBar);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private snack = inject(MatSnackBar);
 
-  displayedColumns = ['rut', 'nombre', 'email', 'estado', 'acciones'];
-  data: Cliente[] = [];
+  id?: number;
+  titulo = 'Nuevo Cliente';
 
-  q = localStorage.getItem('filtroClientes') || '';
+  form = this.fb.group({
+    rut: ['', [Validators.required, rutPersonaValidator()]],
+    nombre_razon: ['', [Validators.required, Validators.minLength(3)]],
+    email_contacto: ['', [Validators.email]],
+    telefono: [''],
+    direccion_facturacion: [''],
+    estado: [true]
+  });
 
   ngOnInit(): void {
-    this.buscar();
+    this.id = Number(this.route.snapshot.paramMap.get('id')) || undefined;
+    if (this.id) {
+      this.titulo = 'Editar Cliente';
+      this.svc.get(this.id).subscribe({
+        next: c => this.form.patchValue(c),
+        error: e => this.snack.open(e?.error?.detail || 'No se pudo cargar', 'Cerrar', { duration: 3000 })
+      });
+    }
   }
 
-  guardarFiltro() {
-    localStorage.setItem('filtroClientes', this.q);
+  normalizarRut() {
+    const raw = this.form.value.rut || '';
+    this.form.patchValue({ rut: formatRut(String(raw)) }, { emitEvent: false });
   }
 
-  buscar() {
-    this.guardarFiltro();
-    const q = (this.q || '').trim();
-    this.svc.listar(q).subscribe({
-      next: (res) => this.data = res,
-      error: () => {
-        this.data = [];
-        this.snack.open('Error al cargar', 'Cerrar', { duration: 3000 });
-      }
-    });
-  }
+  guardar() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.snack.open('Revisa los campos', 'Cerrar', { duration: 2500 });
+      return;
+    }
+    const payload = this.form.value as ClienteCreate;
 
-  crear() {
-    this.router.navigate(['/clientes/nuevo']);
-  }
+    const req$ = this.id
+      ? this.svc.actualizar(this.id, payload)
+      : this.svc.crear(payload);
 
-  editar(c: Cliente) {
-    this.router.navigate(['/clientes/editar', c.id_cliente]);
-  }
-
-  eliminar(c: Cliente) {
-    if (!confirm(`¿Eliminar cliente ${c.nombre_razon}?`)) return;
-    this.svc.eliminar(c.id_cliente).subscribe({
+    req$.subscribe({
       next: _ => {
-        this.snack.open('Eliminado', 'OK', { duration: 2000 });
-        this.buscar();
+        this.snack.open('Guardado correctamente', 'OK', { duration: 2000 });
+        this.router.navigate(['/clientes']);
       },
-      error: e => {
-        this.snack.open(e?.error?.detail || 'No se pudo eliminar', 'Cerrar', { duration: 3000 });
-      }
+      error: e => this.snack.open(e?.error?.detail || 'Error al guardar', 'Cerrar', { duration: 3000 })
     });
   }
 }

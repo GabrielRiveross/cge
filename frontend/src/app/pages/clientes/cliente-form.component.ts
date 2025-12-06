@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClientesService, ClienteCreate } from '../../services/clientes.service';
 import { rutPersonaValidator, formatRut } from '../../shared/validators/rut.validator';
+import {RutValidatorDirective} from '../../shared/validators/rut-validator.directive';
 
 @Component({
   selector: 'app-cliente-form',
@@ -16,7 +17,7 @@ import { rutPersonaValidator, formatRut } from '../../shared/validators/rut.vali
   imports: [
     CommonModule, ReactiveFormsModule, RouterLink,
     MatFormFieldModule, MatInputModule, MatSlideToggleModule,
-    MatButtonModule, MatSnackBarModule
+    MatButtonModule, MatSnackBarModule, RutValidatorDirective
   ],
   templateUrl: './cliente-form.component.html'
 })

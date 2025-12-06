@@ -29,7 +29,7 @@ export const routes: Routes = [
   { path: 'medidores/crear', component: MedidorFormComponent },
   { path: 'medidores/editar/:id', component: MedidorFormComponent },
 
-  // ✅ LECTURAS (ARREGLADO)
+  //  LECTURAS (ARREGLADO)
   { path: 'lecturas', component: LecturasListComponent },   // LISTADO
   { path: 'lecturas/nueva', component: LecturaFormComponent }, // CREAR
   { path: 'lecturas/:id', component: LecturaFormComponent },

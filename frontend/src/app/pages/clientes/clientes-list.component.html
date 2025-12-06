@@ -13,11 +13,17 @@
         <button mat-flat-button color="primary" (click)="buscar()">
           <mat-icon>search</mat-icon> Buscar
         </button>
-        <button mat-flat-button color="accent" (click)="crear()">
-          <mat-icon>person_add</mat-icon> Nuevo
+        <button
+          mat-flat-button
+          color="accent"
+          [routerLink]="['/clientes/nuevo']">
+          <mat-icon>person_add</mat-icon>
+          Nuevo
         </button>
+
       </div>
     </div>
+
     <table mat-table [dataSource]="data" class="mat-mdc-table table--clientes">
       <!-- RUT -->
       <ng-container matColumnDef="rut">
@@ -50,14 +56,18 @@
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef class="mat-column-acciones">Acciones</th>
         <td mat-cell *matCellDef="let c" class="mat-column-acciones">
-      <span class="btn-row">
-        <button mat-stroked-button (click)="editar(c)">Editar</button>
-        <button mat-stroked-button color="warn" (click)="eliminar(c)">Eliminar</button>
-        <button mat-stroked-button color="primary" [routerLink]="['/clientes', c.id_cliente, 'mapa']">Ver mapa</button>
-      </span>
+          <span class="btn-row">
+            <button mat-stroked-button (click)="editar(c)">Editar</button>
+            <button mat-stroked-button color="warn" (click)="eliminar(c)">Eliminar</button>
+            <button mat-stroked-button color="primary" [routerLink]="['/clientes', c.id_cliente, 'mapa']">Ver mapa</button>
+          </span>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+  </div>
+
+</div>

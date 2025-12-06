@@ -2,47 +2,118 @@
   <h1 class="page-title">{{ titulo }}</h1>
 
   <form class="card section" [formGroup]="form" (ngSubmit)="guardar()">
+
+    <!-- Header / Volver -->
     <div class="toolbar" style="margin:0">
-      <span class="mat-body-1" style="color:var(--muted)">Completa la información del cliente</span>
+      <span class="mat-body-1" style="color:var(--muted)">
+        Completa la información del cliente
+      </span>
       <a mat-stroked-button routerLink="/clientes">Volver</a>
     </div>
 
+    <!--  RUT -->
     <mat-form-field appearance="outline">
       <mat-label>RUT (ej: 12.345.678-9)</mat-label>
-      <input matInput formControlName="rut" (blur)="normalizarRut()">
-      <mat-error *ngIf="form.controls.rut.hasError('rutInvalido')">RUT inválido</mat-error>
-      <mat-error *ngIf="form.controls.rut.hasError('required')">Obligatorio</mat-error>
+
+      <input
+        matInput
+        formControlName="rut"
+        appRutValido
+        (blur)="normalizarRut()"
+        placeholder="12.345.678-9"
+      />
+
+      <mat-error *ngIf="form.controls['rut'].hasError('rutInvalido')">
+        RUT inválido
+      </mat-error>
+
+      <mat-error *ngIf="form.controls['rut'].hasError('required')">
+        Obligatorio
+      </mat-error>
     </mat-form-field>
 
+    <!--  Nombre / Razón social -->
     <mat-form-field appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre_razon">
-      <mat-error *ngIf="form.controls.nombre_razon.hasError('required')">Obligatorio</mat-error>
+      <mat-label>Nombre / Razón Social</mat-label>
+      <input
+        matInput
+        formControlName="nombre_razon"
+
+        placeholder="Ej: Juan Pérez o Constructora XYZ SPA"
+      />
+      <mat-error *ngIf="form.controls['nombre_razon'].hasError('required')">
+        Obligatorio
+      </mat-error>
+      <mat-error *ngIf="form.controls['nombre_razon'].hasError('minlength')">
+        Mínimo 3 caracteres
+      </mat-error>
     </mat-form-field>
 
+    <!--  Email + Teléfono -->
     <div class="toolbar" style="gap:12px">
+
+      <!-- Email -->
       <mat-form-field appearance="outline" style="flex:1 1 50%">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email_contacto" type="email">
-        <mat-error *ngIf="form.controls.email_contacto.hasError('email')">Email inválido</mat-error>
+
+        <input
+          matInput
+          formControlName="email_contacto"
+          appCorreoValido
+          appCampoObligatorio
+          placeholder="correo@ejemplo.com"
+        />
+
+        <mat-error *ngIf="form.controls['email_contacto'].hasError('correoInvalido')">
+          Formato inválido (ej: usuarioQdominio.com)
+        </mat-error>
+        <mat-error *ngIf="form.controls['email_contacto'].hasError('required')">
+          Obligatorio
+        </mat-error>
       </mat-form-field>
 
+      <!-- Teléfono -->
       <mat-form-field appearance="outline" style="flex:1 1 50%">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono">
+
+        <input
+          matInput
+          formControlName="telefono"
+          appCampoObligatorio
+          placeholder="+569 9123 4567"
+        />
+
+        <mat-error *ngIf="form.controls['telefono'].hasError('required')">
+          Obligatorio
+        </mat-error>
       </mat-form-field>
     </div>
 
+    <!--  Dirección -->
     <mat-form-field appearance="outline">
       <mat-label>Dirección de facturación</mat-label>
-      <input matInput formControlName="direccion_facturacion">
+      <input
+        matInput
+        formControlName="direccion_facturacion"
+        appCampoObligatorio
+        placeholder="Ej: Av. Siempre Viva 123, Talca"
+      />
+      <mat-error *ngIf="form.controls['direccion_facturacion'].hasError('required')">
+        Obligatorio
+      </mat-error>
     </mat-form-field>
 
+    <!--  Estado -->
     <mat-slide-toggle formControlName="estado">Activo</mat-slide-toggle>
 
+    <!-- Botones -->
     <div class="btn-row center">
-      <button mat-flat-button color="primary" type="submit">Guardar</button>
-      <button mat-stroked-button type="button" routerLink="/clientes">Cancelar</button>
+      <button mat-flat-button color="primary" type="submit">
+        Guardar
+      </button>
+      <button mat-stroked-button type="button" routerLink="/clientes">
+        Cancelar
+      </button>
     </div>
   </form>
 </div>
